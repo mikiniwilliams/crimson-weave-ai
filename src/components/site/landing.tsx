@@ -352,24 +352,46 @@ function Oracle() {
     <Section id="oracle" className="py-28">
       <ThreadDivider label="Transmissions" />
       <div className="relative grid lg:grid-cols-12 gap-10 items-center glow-card rounded-[2rem] p-8 md:p-14 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.35),transparent_70%)] blur-2xl" />
+        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.35),transparent_70%)] blur-2xl ambient-glow" />
+        <div className="absolute inset-0 weave-pattern opacity-50 pointer-events-none" />
+        <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <span
+              key={i}
+              className="particle"
+              style={{
+                left: `${(i * 53) % 100}%`,
+                top: `${50 + ((i * 13) % 40)}%`,
+                animationDelay: `${(i * 0.7) % 6}s`,
+                animationDuration: `${6 + (i % 4)}s`,
+              }}
+            />
+          ))}
+        </div>
         <div className="lg:col-span-5 relative">
-          <img
-            src={oracleCloseup}
-            alt="The Crimson Oracle close-up portrait"
-            className="w-full max-w-xs mx-auto rounded-full ring-1 ring-[oklch(0.78_0.13_80_/_0.4)] shadow-[0_30px_60px_-20px_oklch(0.42_0.16_25_/_0.5)]"
-          />
+          <div className="relative w-full max-w-xs mx-auto">
+            <div className="absolute -inset-6 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.5),transparent_65%)] blur-2xl ambient-glow" />
+            <div className="absolute -inset-3 rounded-full border border-[oklch(0.78_0.13_80_/_0.35)]" />
+            <img
+              src={oracleCloseup}
+              alt="The Crimson Oracle close-up portrait"
+              className="relative w-full rounded-full ring-1 ring-[oklch(0.78_0.13_80_/_0.5)] shadow-[0_40px_70px_-20px_oklch(0.42_0.16_25_/_0.55)]"
+            />
+          </div>
         </div>
         <div className="lg:col-span-7 relative">
-          <div className="text-[var(--crimson)] uppercase tracking-[0.3em] text-xs mb-3 flex items-center gap-2">
+          <div className="text-[var(--crimson)] uppercase tracking-[0.3em] text-xs mb-4 flex items-center gap-2">
             <MessagesSquare className="w-3.5 h-3.5" /> Oracle Transmissions
           </div>
-          <h2 className="font-display text-4xl md:text-5xl text-[var(--espresso)]">
+          <h2 className="font-display text-4xl md:text-5xl text-[var(--espresso)] leading-tight">
             Weekly wisdom from <span className="gold-text italic">the Oracle</span>.
           </h2>
+          <p className="mt-3 text-sm uppercase tracking-[0.22em] text-[var(--gold)]/90">
+            Weekly intelligence for creators building the future.
+          </p>
           <p className="mt-5 text-[var(--espresso)]/75 max-w-xl">
-            Weekly intelligence from The Crimson Oracle: AI trends, prompt drops, design
-            ideas, automation tips, and digital business strategy.
+            AI trends, prompt drops, design ideas, automation tips, and digital business
+            strategy — distilled into one thoughtful transmission.
           </p>
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -380,11 +402,11 @@ function Oracle() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full rounded-full bg-[oklch(0.985_0.012_80)] border border-[oklch(0.78_0.13_80_/_0.4)] py-3.5 pl-11 pr-5 text-sm focus:outline-none focus:border-[var(--crimson)] focus:ring-2 focus:ring-[oklch(0.42_0.16_25_/_0.2)]"
+                className="w-full rounded-full bg-[oklch(0.985_0.012_80)] border border-[oklch(0.78_0.13_80_/_0.4)] py-3.5 pl-11 pr-5 text-sm focus:outline-none focus:border-[var(--crimson)] focus:ring-2 focus:ring-[oklch(0.42_0.16_25_/_0.2)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.6)]"
               />
             </div>
-            <button type="submit" className="btn-primary rounded-full px-7 py-3.5 text-sm font-medium tracking-wide">
-              Receive the Transmission
+            <button type="submit" className="btn-primary rounded-full px-7 py-3.5 text-sm font-medium tracking-wide inline-flex items-center justify-center gap-2">
+              Receive the Transmission <ArrowRight className="w-4 h-4" />
             </button>
           </form>
           <p className="mt-3 text-xs text-[var(--muted-foreground)]">
