@@ -1,29 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Landing } from "@/components/site/landing";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "The AI Vision Weaver — Strategy, Systems, AI & Design by Mikini Williams" },
+      {
+        name: "description",
+        content:
+          "Weaving strategy, systems, AI, and design into digital products that feel like the future. Premium AI strategy, digital products, and creative systems by Mikini Williams.",
+      },
+      { property: "og:title", content: "The AI Vision Weaver" },
+      {
+        property: "og:description",
+        content:
+          "Strategy, systems, AI, and design woven into intelligent brands and digital income.",
+      },
+    ],
+    links: [
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap",
+      },
     ],
   }),
-  component: Index,
+  component: Landing,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
