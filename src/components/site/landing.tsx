@@ -277,7 +277,8 @@ const studioOffers = [
 function Studio() {
   return (
     <div className="relative py-28 mt-12 bg-[var(--wine)] text-[oklch(0.97_0.015_80)] overflow-hidden">
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_80_/_0.4),transparent_50%)]" />
+      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_80_/_0.45),transparent_55%)]" />
+      <div className="absolute inset-0 weave-pattern opacity-50 pointer-events-none" />
       <svg className="absolute inset-0 w-full h-full opacity-30 pointer-events-none" aria-hidden>
         {Array.from({ length: 60 }).map((_, i) => {
           const cx = (i * 113) % 1600;
@@ -285,12 +286,28 @@ function Studio() {
           return <circle key={i} cx={cx} cy={cy} r="1.5" fill="#e8c46a" />;
         })}
       </svg>
+      {/* ambient drifting particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 14 }).map((_, i) => (
+          <span
+            key={i}
+            className="particle"
+            style={{
+              left: `${(i * 73) % 100}%`,
+              top: `${60 + ((i * 17) % 35)}%`,
+              animationDelay: `${(i * 0.6) % 7}s`,
+              animationDuration: `${6 + (i % 5)}s`,
+            }}
+          />
+        ))}
+      </div>
       <Section id="studio">
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-16 relative">
           <div className="lg:col-span-5">
             <div className="relative">
-              <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.4),transparent_60%)] blur-2xl" />
-              <img src={oracleLaptop} alt="The Crimson Oracle working on a laptop" className="relative w-full max-w-sm mx-auto" />
+              <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.55),transparent_60%)] blur-3xl ambient-glow" />
+              <div className="absolute inset-6 rounded-full border border-[oklch(0.78_0.13_80_/_0.15)]" />
+              <img src={oracleLaptop} alt="The Crimson Oracle working on a laptop" className="relative w-full max-w-sm mx-auto drop-shadow-[0_30px_50px_oklch(0_0_0_/_0.45)]" />
             </div>
           </div>
           <div className="lg:col-span-7">
