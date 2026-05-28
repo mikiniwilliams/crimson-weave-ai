@@ -53,9 +53,9 @@ function Hero() {
         })}
       </svg>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-24 md:pt-24 md:pb-32 grid lg:grid-cols-12 gap-10 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-28 md:pt-32 md:pb-40 grid lg:grid-cols-12 gap-14 items-center">
         <div className="lg:col-span-6 relative z-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-[var(--wine)] mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-[var(--wine)] mb-7">
             <Sparkles className="w-3.5 h-3.5" /> Strategy · Systems · AI · Magic
           </div>
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-[var(--espresso)]">
@@ -63,7 +63,7 @@ function Hero() {
             <br />
             Vision <span className="text-[var(--crimson)]">Weaver</span>
           </h1>
-          <p className="mt-6 text-lg text-[var(--espresso)]/80 max-w-xl leading-relaxed">
+          <p className="mt-7 text-lg text-[var(--espresso)]/80 max-w-xl leading-relaxed">
             Weaving strategy, systems, AI, and design into digital products that feel like
             the future.
           </p>
@@ -71,7 +71,7 @@ function Hero() {
             For entrepreneurs, consultants, and creators ready to turn ideas into intelligent
             brands, content systems, and digital income.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-9 flex flex-wrap gap-3">
             <a href="#studio" className="btn-primary px-7 py-3.5 rounded-full font-medium tracking-wide inline-flex items-center gap-2">
               Enter the Studio <ArrowRight className="w-4 h-4" />
             </a>
@@ -80,7 +80,7 @@ function Hero() {
             </a>
           </div>
 
-          <div className="mt-10 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-lg">
+          <div className="mt-12 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-lg">
             {[
               { icon: <Brain className="w-4 h-4" />, label: "Prompts" },
               { icon: <Palette className="w-4 h-4" />, label: "Branding" },
@@ -100,13 +100,18 @@ function Hero() {
         </div>
 
         <div className="lg:col-span-6 relative">
-          <div className="relative">
-            {/* golden orb behind */}
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.35),transparent_60%)] blur-2xl" />
+          <div className="relative min-h-[520px] md:min-h-[640px] flex items-center justify-center">
+            {/* layered ambient halos */}
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl ambient-glow" />
+            <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.25),transparent_65%)] blur-2xl" />
+            {/* holographic ring */}
+            <div className="absolute inset-6 rounded-full border border-[oklch(0.78_0.13_80_/_0.18)]" />
+            <div className="absolute inset-16 rounded-full border border-[oklch(0.78_0.13_80_/_0.12)]" />
+
             <img
               src={oracleStanding}
               alt="The Crimson Oracle, AI Vision Weaver mascot, surrounded by glowing interface cards"
-              className="relative w-full max-w-lg mx-auto drop-shadow-[0_30px_60px_oklch(0.30_0.11_22_/_0.35)]"
+              className="relative w-full max-w-xl mx-auto drop-shadow-[0_40px_70px_oklch(0.30_0.11_22_/_0.45)]"
               loading="eager"
             />
 
@@ -114,24 +119,24 @@ function Hero() {
             <FloatingCard
               title="AI Strategy"
               icon={<Brain className="w-3.5 h-3.5" />}
-              className="top-6 -left-2 md:-left-8"
+              className="top-10 -left-2 md:-left-10"
             />
             <FloatingCard
               title="Automation"
               icon={<Workflow className="w-3.5 h-3.5" />}
-              className="top-1/3 -right-2 md:-right-4"
+              className="top-1/3 -right-2 md:-right-6"
               delay="delay-1"
             />
             <FloatingCard
               title="Digital Products"
               icon={<Layers className="w-3.5 h-3.5" />}
-              className="bottom-24 -left-4 md:-left-10"
+              className="bottom-28 -left-4 md:-left-12"
               delay="delay-2"
             />
             <FloatingCard
               title="Brand Weave"
               icon={<Palette className="w-3.5 h-3.5" />}
-              className="bottom-10 right-0 md:right-2"
+              className="bottom-12 right-0 md:right-2"
               delay="delay-3"
             />
           </div>
@@ -228,24 +233,30 @@ function Vault() {
         {vaultProducts.map((p) => (
           <article
             key={p.title}
-            className="group glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_30px_60px_-30px_oklch(0.42_0.16_25_/_0.5)]"
+            className="group relative glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-500"
           >
             <div className="relative h-44 bg-gradient-to-br from-[var(--wine)] to-[oklch(0.22_0.07_25)] flex items-center justify-center overflow-hidden">
-              <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_30%_30%,oklch(0.78_0.13_80_/_0.6),transparent_50%)]" />
-              <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.4)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8">
+              <div className="absolute inset-0 weave-pattern opacity-60" />
+              <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_30%,oklch(0.78_0.13_80_/_0.6),transparent_55%)]" />
+              <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.45)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8 shadow-[0_0_30px_oklch(0.78_0.13_80_/_0.4)_inset] group-hover:scale-105 transition-transform duration-500">
                 {p.icon}
               </span>
               <Lock className="absolute top-4 right-4 w-4 h-4 text-[var(--gold)]/60" />
+              <span className="absolute bottom-3 left-4 text-[10px] tracking-[0.3em] uppercase text-[var(--gold)]/70">Artifact · 0{(vaultProducts.indexOf(p) + 1)}</span>
             </div>
-            <div className="p-6 flex-1 flex flex-col">
+            <div className="relative p-6 flex-1 flex flex-col">
+              <span className="oracle-watermark" aria-hidden />
               <h3 className="font-display text-xl text-[var(--espresso)]">{p.title}</h3>
-              <p className="mt-2 text-sm text-[var(--espresso)]/70 flex-1">{p.desc}</p>
-              <div className="mt-5 flex items-center justify-between">
+              <p className="mt-2 text-sm text-[var(--espresso)]/70 flex-1 relative">{p.desc}</p>
+              <div className="mt-5 flex items-center justify-between relative">
                 <span className="font-display text-2xl text-[var(--crimson)]">{p.price}</span>
-                <button className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                <button className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 group-hover:text-[var(--crimson)] transition-all">
                   View Product <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
+              {/* corner detailing */}
+              <span className="pointer-events-none absolute top-2 left-2 w-3 h-3 border-l border-t border-[var(--gold)]/40" />
+              <span className="pointer-events-none absolute top-2 right-2 w-3 h-3 border-r border-t border-[var(--gold)]/40" />
             </div>
           </article>
         ))}
@@ -266,7 +277,8 @@ const studioOffers = [
 function Studio() {
   return (
     <div className="relative py-28 mt-12 bg-[var(--wine)] text-[oklch(0.97_0.015_80)] overflow-hidden">
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_80_/_0.4),transparent_50%)]" />
+      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(ellipse_at_top,oklch(0.78_0.13_80_/_0.45),transparent_55%)]" />
+      <div className="absolute inset-0 weave-pattern opacity-50 pointer-events-none" />
       <svg className="absolute inset-0 w-full h-full opacity-30 pointer-events-none" aria-hidden>
         {Array.from({ length: 60 }).map((_, i) => {
           const cx = (i * 113) % 1600;
@@ -274,12 +286,28 @@ function Studio() {
           return <circle key={i} cx={cx} cy={cy} r="1.5" fill="#e8c46a" />;
         })}
       </svg>
+      {/* ambient drifting particles */}
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 14 }).map((_, i) => (
+          <span
+            key={i}
+            className="particle"
+            style={{
+              left: `${(i * 73) % 100}%`,
+              top: `${60 + ((i * 17) % 35)}%`,
+              animationDelay: `${(i * 0.6) % 7}s`,
+              animationDuration: `${6 + (i % 5)}s`,
+            }}
+          />
+        ))}
+      </div>
       <Section id="studio">
         <div className="grid lg:grid-cols-12 gap-12 items-center mb-16 relative">
           <div className="lg:col-span-5">
             <div className="relative">
-              <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.4),transparent_60%)] blur-2xl" />
-              <img src={oracleLaptop} alt="The Crimson Oracle working on a laptop" className="relative w-full max-w-sm mx-auto" />
+              <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.55),transparent_60%)] blur-3xl ambient-glow" />
+              <div className="absolute inset-6 rounded-full border border-[oklch(0.78_0.13_80_/_0.15)]" />
+              <img src={oracleLaptop} alt="The Crimson Oracle working on a laptop" className="relative w-full max-w-sm mx-auto drop-shadow-[0_30px_50px_oklch(0_0_0_/_0.45)]" />
             </div>
           </div>
           <div className="lg:col-span-7">
@@ -324,24 +352,46 @@ function Oracle() {
     <Section id="oracle" className="py-28">
       <ThreadDivider label="Transmissions" />
       <div className="relative grid lg:grid-cols-12 gap-10 items-center glow-card rounded-[2rem] p-8 md:p-14 overflow-hidden">
-        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.35),transparent_70%)] blur-2xl" />
+        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.35),transparent_70%)] blur-2xl ambient-glow" />
+        <div className="absolute inset-0 weave-pattern opacity-50 pointer-events-none" />
+        <div className="absolute inset-0 pointer-events-none">
+          {Array.from({ length: 10 }).map((_, i) => (
+            <span
+              key={i}
+              className="particle"
+              style={{
+                left: `${(i * 53) % 100}%`,
+                top: `${50 + ((i * 13) % 40)}%`,
+                animationDelay: `${(i * 0.7) % 6}s`,
+                animationDuration: `${6 + (i % 4)}s`,
+              }}
+            />
+          ))}
+        </div>
         <div className="lg:col-span-5 relative">
-          <img
-            src={oracleCloseup}
-            alt="The Crimson Oracle close-up portrait"
-            className="w-full max-w-xs mx-auto rounded-full ring-1 ring-[oklch(0.78_0.13_80_/_0.4)] shadow-[0_30px_60px_-20px_oklch(0.42_0.16_25_/_0.5)]"
-          />
+          <div className="relative w-full max-w-xs mx-auto">
+            <div className="absolute -inset-6 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.5),transparent_65%)] blur-2xl ambient-glow" />
+            <div className="absolute -inset-3 rounded-full border border-[oklch(0.78_0.13_80_/_0.35)]" />
+            <img
+              src={oracleCloseup}
+              alt="The Crimson Oracle close-up portrait"
+              className="relative w-full rounded-full ring-1 ring-[oklch(0.78_0.13_80_/_0.5)] shadow-[0_40px_70px_-20px_oklch(0.42_0.16_25_/_0.55)]"
+            />
+          </div>
         </div>
         <div className="lg:col-span-7 relative">
-          <div className="text-[var(--crimson)] uppercase tracking-[0.3em] text-xs mb-3 flex items-center gap-2">
+          <div className="text-[var(--crimson)] uppercase tracking-[0.3em] text-xs mb-4 flex items-center gap-2">
             <MessagesSquare className="w-3.5 h-3.5" /> Oracle Transmissions
           </div>
-          <h2 className="font-display text-4xl md:text-5xl text-[var(--espresso)]">
+          <h2 className="font-display text-4xl md:text-5xl text-[var(--espresso)] leading-tight">
             Weekly wisdom from <span className="gold-text italic">the Oracle</span>.
           </h2>
+          <p className="mt-3 text-sm uppercase tracking-[0.22em] text-[var(--gold)]/90">
+            Weekly intelligence for creators building the future.
+          </p>
           <p className="mt-5 text-[var(--espresso)]/75 max-w-xl">
-            Weekly intelligence from The Crimson Oracle: AI trends, prompt drops, design
-            ideas, automation tips, and digital business strategy.
+            AI trends, prompt drops, design ideas, automation tips, and digital business
+            strategy — distilled into one thoughtful transmission.
           </p>
           <form
             onSubmit={(e) => e.preventDefault()}
@@ -352,11 +402,11 @@ function Oracle() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full rounded-full bg-[oklch(0.985_0.012_80)] border border-[oklch(0.78_0.13_80_/_0.4)] py-3.5 pl-11 pr-5 text-sm focus:outline-none focus:border-[var(--crimson)] focus:ring-2 focus:ring-[oklch(0.42_0.16_25_/_0.2)]"
+                className="w-full rounded-full bg-[oklch(0.985_0.012_80)] border border-[oklch(0.78_0.13_80_/_0.4)] py-3.5 pl-11 pr-5 text-sm focus:outline-none focus:border-[var(--crimson)] focus:ring-2 focus:ring-[oklch(0.42_0.16_25_/_0.2)] shadow-[inset_0_1px_0_oklch(1_0_0_/_0.6)]"
               />
             </div>
-            <button type="submit" className="btn-primary rounded-full px-7 py-3.5 text-sm font-medium tracking-wide">
-              Receive the Transmission
+            <button type="submit" className="btn-primary rounded-full px-7 py-3.5 text-sm font-medium tracking-wide inline-flex items-center justify-center gap-2">
+              Receive the Transmission <ArrowRight className="w-4 h-4" />
             </button>
           </form>
           <p className="mt-3 text-xs text-[var(--muted-foreground)]">
@@ -395,18 +445,21 @@ function About() {
           <h2 className="font-display text-4xl md:text-5xl text-[var(--espresso)] leading-tight">
             Meet <span className="gold-text italic">Mikini Williams</span>
           </h2>
+          <p className="mt-5 text-base md:text-lg text-[var(--wine)] font-medium italic">
+            Cybersecurity strategist. AI consultant. Systems thinker.
+          </p>
           <p className="mt-6 text-lg text-[var(--espresso)]/80 leading-relaxed">
-            Mikini Williams is a cybersecurity professional, certified AI consultant,
-            strategist, and creative builder helping entrepreneurs understand and use AI
-            without losing their voice, values, or vision.
+            20+ years in technology — and still obsessed with building. Mikini helps
+            entrepreneurs use AI without losing their voice, values, or vision.
           </p>
           <p className="mt-4 text-[var(--espresso)]/70">
-            She believes the best brands are woven — not assembled. Every offer, system,
-            and pixel is a thread in a larger tapestry of meaning, intelligence, and income.
+            She believes the best brands are <em className="not-italic text-[var(--crimson)] font-medium">woven</em>, not
+            assembled. Every offer, system, and pixel is a thread in a larger tapestry of
+            meaning, intelligence, and income.
           </p>
-          <div className="mt-8 grid sm:grid-cols-3 gap-4">
+          <div className="mt-9 grid sm:grid-cols-3 gap-4">
             {[
-              { k: "10+", v: "Years in tech & security" },
+              { k: "20+", v: "Years in tech & cybersecurity" },
               { k: "200+", v: "Brands & creators guided" },
               { k: "AI-Certified", v: "Strategist & consultant" },
             ].map((s) => (
@@ -456,12 +509,38 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="py-12 text-center text-sm text-[var(--muted-foreground)] tapestry-bg">
-      <div className="flex items-center justify-center gap-2 mb-3">
+    <footer className="relative pt-20 pb-14 text-center text-sm text-[var(--muted-foreground)] tapestry-bg overflow-hidden">
+      {/* constellation divider */}
+      <div className="max-w-3xl mx-auto px-6 mb-12 flex items-center gap-4">
+        <div className="flex-1 h-px thread-line" />
+        <span className="constellation-dot" />
+        <span className="constellation-dot" style={{ opacity: 0.6 }} />
+        <span className="constellation-dot" />
+        <div className="flex-1 h-px thread-line" />
+      </div>
+
+      {/* embossed oracle eye watermark */}
+      <div className="absolute left-1/2 top-24 -translate-x-1/2 w-56 h-56 opacity-[0.06] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at center, transparent 26%, oklch(0.42 0.16 25) 27% 30%, transparent 31% 44%, oklch(0.42 0.16 25) 45% 47%, transparent 48%)",
+          borderRadius: "999px",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative max-w-2xl mx-auto px-6">
+        <p className="font-display text-2xl md:text-3xl text-[var(--espresso)] italic leading-snug">
+          “Every powerful vision begins as a <span className="gold-text not-italic">thread</span>.”
+        </p>
+        <div className="mt-3 text-[10px] tracking-[0.35em] uppercase text-[var(--gold)]">— The Crimson Oracle</div>
+      </div>
+
+      <div className="relative flex items-center justify-center gap-2 mt-12 mb-3">
         <BookOpen className="w-3.5 h-3.5 text-[var(--gold)]" />
         <span className="uppercase tracking-[0.3em] text-xs">The AI Vision Weaver</span>
       </div>
-      <p>© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
+      <p className="relative">© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
     </footer>
   );
 }
