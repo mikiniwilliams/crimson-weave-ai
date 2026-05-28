@@ -233,24 +233,30 @@ function Vault() {
         {vaultProducts.map((p) => (
           <article
             key={p.title}
-            className="group glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1 transition-all duration-300 hover:shadow-[0_30px_60px_-30px_oklch(0.42_0.16_25_/_0.5)]"
+            className="group relative glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-500"
           >
             <div className="relative h-44 bg-gradient-to-br from-[var(--wine)] to-[oklch(0.22_0.07_25)] flex items-center justify-center overflow-hidden">
-              <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_30%_30%,oklch(0.78_0.13_80_/_0.6),transparent_50%)]" />
-              <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.4)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8">
+              <div className="absolute inset-0 weave-pattern opacity-60" />
+              <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_30%,oklch(0.78_0.13_80_/_0.6),transparent_55%)]" />
+              <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.45)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8 shadow-[0_0_30px_oklch(0.78_0.13_80_/_0.4)_inset] group-hover:scale-105 transition-transform duration-500">
                 {p.icon}
               </span>
               <Lock className="absolute top-4 right-4 w-4 h-4 text-[var(--gold)]/60" />
+              <span className="absolute bottom-3 left-4 text-[10px] tracking-[0.3em] uppercase text-[var(--gold)]/70">Artifact · 0{(vaultProducts.indexOf(p) + 1)}</span>
             </div>
-            <div className="p-6 flex-1 flex flex-col">
+            <div className="relative p-6 flex-1 flex flex-col">
+              <span className="oracle-watermark" aria-hidden />
               <h3 className="font-display text-xl text-[var(--espresso)]">{p.title}</h3>
-              <p className="mt-2 text-sm text-[var(--espresso)]/70 flex-1">{p.desc}</p>
-              <div className="mt-5 flex items-center justify-between">
+              <p className="mt-2 text-sm text-[var(--espresso)]/70 flex-1 relative">{p.desc}</p>
+              <div className="mt-5 flex items-center justify-between relative">
                 <span className="font-display text-2xl text-[var(--crimson)]">{p.price}</span>
-                <button className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
+                <button className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 group-hover:text-[var(--crimson)] transition-all">
                   View Product <ArrowRight className="w-3.5 h-3.5" />
                 </button>
               </div>
+              {/* corner detailing */}
+              <span className="pointer-events-none absolute top-2 left-2 w-3 h-3 border-l border-t border-[var(--gold)]/40" />
+              <span className="pointer-events-none absolute top-2 right-2 w-3 h-3 border-r border-t border-[var(--gold)]/40" />
             </div>
           </article>
         ))}
