@@ -445,18 +445,21 @@ function About() {
           <h2 className="font-display text-4xl md:text-5xl text-[var(--espresso)] leading-tight">
             Meet <span className="gold-text italic">Mikini Williams</span>
           </h2>
+          <p className="mt-5 text-base md:text-lg text-[var(--wine)] font-medium italic">
+            Cybersecurity strategist. AI consultant. Systems thinker.
+          </p>
           <p className="mt-6 text-lg text-[var(--espresso)]/80 leading-relaxed">
-            Mikini Williams is a cybersecurity professional, certified AI consultant,
-            strategist, and creative builder helping entrepreneurs understand and use AI
-            without losing their voice, values, or vision.
+            20+ years in technology — and still obsessed with building. Mikini helps
+            entrepreneurs use AI without losing their voice, values, or vision.
           </p>
           <p className="mt-4 text-[var(--espresso)]/70">
-            She believes the best brands are woven — not assembled. Every offer, system,
-            and pixel is a thread in a larger tapestry of meaning, intelligence, and income.
+            She believes the best brands are <em className="not-italic text-[var(--crimson)] font-medium">woven</em>, not
+            assembled. Every offer, system, and pixel is a thread in a larger tapestry of
+            meaning, intelligence, and income.
           </p>
-          <div className="mt-8 grid sm:grid-cols-3 gap-4">
+          <div className="mt-9 grid sm:grid-cols-3 gap-4">
             {[
-              { k: "10+", v: "Years in tech & security" },
+              { k: "20+", v: "Years in tech & cybersecurity" },
               { k: "200+", v: "Brands & creators guided" },
               { k: "AI-Certified", v: "Strategist & consultant" },
             ].map((s) => (
