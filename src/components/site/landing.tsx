@@ -509,11 +509,41 @@ function FinalCTA() {
 
 function Footer() {
   return (
-    <footer className="py-12 text-center text-sm text-[var(--muted-foreground)] tapestry-bg">
-      <div className="flex items-center justify-center gap-2 mb-3">
+    <footer className="relative pt-20 pb-14 text-center text-sm text-[var(--muted-foreground)] tapestry-bg overflow-hidden">
+      {/* constellation divider */}
+      <div className="max-w-3xl mx-auto px-6 mb-12 flex items-center gap-4">
+        <div className="flex-1 h-px thread-line" />
+        <span className="constellation-dot" />
+        <span className="constellation-dot" style={{ opacity: 0.6 }} />
+        <span className="constellation-dot" />
+        <div className="flex-1 h-px thread-line" />
+      </div>
+
+      {/* embossed oracle eye watermark */}
+      <div className="absolute left-1/2 top-24 -translate-x-1/2 w-56 h-56 opacity-[0.06] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle at center, transparent 26%, oklch(0.42 0.16 25) 27% 30%, transparent 31% 44%, oklch(0.42 0.16 25) 45% 47%, transparent 48%)",
+          borderRadius: "999px",
+        }}
+        aria-hidden
+      />
+
+      <div className="relative max-w-2xl mx-auto px-6">
+        <p className="font-display text-2xl md:text-3xl text-[var(--espresso)] italic leading-snug">
+          “Every powerful vision begins as a <span className="gold-text not-italic">thread</span>.”
+        </p>
+        <div className="mt-3 text-[10px] tracking-[0.35em] uppercase text-[var(--gold)]">— The Crimson Oracle</div>
+      </div>
+
+      <div className="relative flex items-center justify-center gap-2 mt-12 mb-3">
         <BookOpen className="w-3.5 h-3.5 text-[var(--gold)]" />
         <span className="uppercase tracking-[0.3em] text-xs">The AI Vision Weaver</span>
       </div>
+      <p className="relative">© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
+    </footer>
+  );
+}
       <p>© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
     </footer>
   );
