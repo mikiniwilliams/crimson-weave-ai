@@ -544,10 +544,6 @@ function Footer() {
     </footer>
   );
 }
-      <p>© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
-    </footer>
-  );
-}
 
 export function Landing() {
   return (
