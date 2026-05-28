@@ -53,9 +53,9 @@ function Hero() {
         })}
       </svg>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-16 pb-24 md:pt-24 md:pb-32 grid lg:grid-cols-12 gap-10 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-28 md:pt-32 md:pb-40 grid lg:grid-cols-12 gap-14 items-center">
         <div className="lg:col-span-6 relative z-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-[var(--wine)] mb-6">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-[var(--wine)] mb-7">
             <Sparkles className="w-3.5 h-3.5" /> Strategy · Systems · AI · Magic
           </div>
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-[var(--espresso)]">
@@ -63,7 +63,7 @@ function Hero() {
             <br />
             Vision <span className="text-[var(--crimson)]">Weaver</span>
           </h1>
-          <p className="mt-6 text-lg text-[var(--espresso)]/80 max-w-xl leading-relaxed">
+          <p className="mt-7 text-lg text-[var(--espresso)]/80 max-w-xl leading-relaxed">
             Weaving strategy, systems, AI, and design into digital products that feel like
             the future.
           </p>
@@ -71,7 +71,7 @@ function Hero() {
             For entrepreneurs, consultants, and creators ready to turn ideas into intelligent
             brands, content systems, and digital income.
           </p>
-          <div className="mt-8 flex flex-wrap gap-3">
+          <div className="mt-9 flex flex-wrap gap-3">
             <a href="#studio" className="btn-primary px-7 py-3.5 rounded-full font-medium tracking-wide inline-flex items-center gap-2">
               Enter the Studio <ArrowRight className="w-4 h-4" />
             </a>
@@ -80,7 +80,7 @@ function Hero() {
             </a>
           </div>
 
-          <div className="mt-10 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-lg">
+          <div className="mt-12 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-lg">
             {[
               { icon: <Brain className="w-4 h-4" />, label: "Prompts" },
               { icon: <Palette className="w-4 h-4" />, label: "Branding" },
@@ -100,13 +100,18 @@ function Hero() {
         </div>
 
         <div className="lg:col-span-6 relative">
-          <div className="relative">
-            {/* golden orb behind */}
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.35),transparent_60%)] blur-2xl" />
+          <div className="relative min-h-[520px] md:min-h-[640px] flex items-center justify-center">
+            {/* layered ambient halos */}
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl ambient-glow" />
+            <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.25),transparent_65%)] blur-2xl" />
+            {/* holographic ring */}
+            <div className="absolute inset-6 rounded-full border border-[oklch(0.78_0.13_80_/_0.18)]" />
+            <div className="absolute inset-16 rounded-full border border-[oklch(0.78_0.13_80_/_0.12)]" />
+
             <img
               src={oracleStanding}
               alt="The Crimson Oracle, AI Vision Weaver mascot, surrounded by glowing interface cards"
-              className="relative w-full max-w-lg mx-auto drop-shadow-[0_30px_60px_oklch(0.30_0.11_22_/_0.35)]"
+              className="relative w-full max-w-xl mx-auto drop-shadow-[0_40px_70px_oklch(0.30_0.11_22_/_0.45)]"
               loading="eager"
             />
 
@@ -114,24 +119,24 @@ function Hero() {
             <FloatingCard
               title="AI Strategy"
               icon={<Brain className="w-3.5 h-3.5" />}
-              className="top-6 -left-2 md:-left-8"
+              className="top-10 -left-2 md:-left-10"
             />
             <FloatingCard
               title="Automation"
               icon={<Workflow className="w-3.5 h-3.5" />}
-              className="top-1/3 -right-2 md:-right-4"
+              className="top-1/3 -right-2 md:-right-6"
               delay="delay-1"
             />
             <FloatingCard
               title="Digital Products"
               icon={<Layers className="w-3.5 h-3.5" />}
-              className="bottom-24 -left-4 md:-left-10"
+              className="bottom-28 -left-4 md:-left-12"
               delay="delay-2"
             />
             <FloatingCard
               title="Brand Weave"
               icon={<Palette className="w-3.5 h-3.5" />}
-              className="bottom-10 right-0 md:right-2"
+              className="bottom-12 right-0 md:right-2"
               delay="delay-3"
             />
           </div>
