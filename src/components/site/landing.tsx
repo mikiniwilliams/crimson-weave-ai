@@ -573,6 +573,7 @@ function Footer() {
 export function Landing() {
   return (
     <div className="min-h-screen bg-[var(--cream)] text-[var(--foreground)]">
+      <CursorSpotlight />
       <Nav />
       <main>
         <Hero />
