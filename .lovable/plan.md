@@ -1,71 +1,69 @@
+## Goal
 
-# Cinematic Refinement Pass — AI Vision Weaver
+Swap the static `oracleStanding` PNG in the hero for the uploaded MP4, present it noticeably larger so it reads as a dimensional 3D centerpiece, and protect the legibility of the "The AI Vision Weaver" headline and surrounding copy.
 
-Polish-only pass. No layout, palette, typography, imagery, or section-order changes. All edits live in `src/styles.css`, `src/components/site/landing.tsx`, `src/components/site/nav.tsx`, `src/components/site/thread-divider.tsx`, and `src/hooks/use-reveal.ts`.
+## Changes
 
-## 1. Motion system (styles.css)
-- Slow all `float-card` to 9–11s with eased sine drift on both X and Y (not just Y); stagger delays so cards never sync.
-- Replace abrupt `.reveal` with longer 1.2s ease with a slight blur(6→0) for cinematic entry; add `.reveal-slow` variant for hero/headings.
-- Add `prefers-reduced-motion` guard disabling all ambient animations.
-- Add a global cursor-reactive spotlight: a single fixed radial-gradient div positioned via CSS variables `--mx/--my`, very subtle (8% gold), updated by a lightweight pointer listener in landing.tsx.
-- Add `.breathe` utility (slow opacity+scale 8s) for ambient halos to replace harder `ambient-glow` in a couple of places.
+### 1. Add the video as a project asset
+- Copy `user-uploads://media-1779942874128-3.mp4` → `src/assets/oracle-hero.mp4`.
+- Import it in `src/components/site/landing.tsx` as a URL: `import oracleHero from "@/assets/oracle-hero.mp4"`.
+- Remove the now-unused `oracleStanding` import (kept only if referenced elsewhere; quick check shows it is only used in Hero).
 
-## 2. Thread system (styles.css + thread-divider.tsx)
-- Slow `threadFlow` to 14s, add a second offset shimmer layer for woven double-thread feel.
-- Add `.node-pulse` staggered timing (3 variants) and a faint outer ring pulse.
-- Add a new `.thread-rail` vertical class so the page can carry one continuous faint gold rail down the left edge connecting Hero → Tapestry → Vault → Studio → Transmissions → Footer (rendered once in landing.tsx as a fixed/absolute decorative element behind content).
+### 2. Replace the hero `<img>` with a `<video>` (Hero, lines ~127–159)
+Replace the `<img src={oracleStanding} … />` block with:
 
-## 3. Hero (landing.tsx)
-- Increase top/bottom padding (~`pt-36 md:pt-44 pb-44`) and column gap on lg.
-- Enlarge oracle container (`min-h-[720px]`, `max-w-2xl` image) and pull floating cards slightly further out.
-- Add a 3rd holographic ring + a subtle rotating dashed ring (very slow, 60s) behind the oracle for depth.
-- Add 6–8 ambient particles inside the hero halo area.
-- Add a soft vignette gradient at the section bottom for cinematic falloff.
+```tsx
+<video
+  src={oracleHero}
+  autoPlay
+  loop
+  muted
+  playsInline
+  preload="metadata"
+  aria-label="The Crimson Oracle, AI Vision Weaver mascot"
+  className="relative w-full max-w-3xl lg:max-w-[44rem] xl:max-w-[50rem]
+             mx-auto lg:-mr-10 xl:-mr-20
+             scale-110 md:scale-[1.18] lg:scale-[1.25]
+             [transform:perspective(1400px)_rotateY(-6deg)_rotateX(2deg)]
+             drop-shadow-[0_70px_110px_oklch(0.30_0.11_22_/_0.55)]
+             rounded-[2rem]"
+/>
+```
 
-## 4. Tapestry (landing.tsx)
-- Add a subtle gold node at each card corner intersection so woven SVG paths visibly "tie" into cards.
-- Lengthen card hover transition; add gentle inner-glow on hover.
+- Larger max-width + scale + a subtle perspective tilt give the 3D "stepping out of the frame" feel.
+- `autoPlay muted loop playsInline` ensures it plays silently on all browsers including iOS.
+- Keep the existing halos, holographic rings, dashed ring and particles around it — they already sell the dimensionality.
 
-## 5. Vault — premium artifacts (styles.css + landing.tsx)
-- Refine `.weave-pattern` to a finer 22px grid and reduce opacity for embossed feel.
-- Add an embossed gold "eye" watermark SVG behind each card title (very low opacity, brightens on hover).
-- Stronger layered shadow stack on `.glow-card` hover (ambient + key + gold rim).
-- Add a thin gold hairline along the top edge of each card image area for collectible framing.
+### 3. Enlarge the stage so the video can breathe
+- Bump the hero stage container (line 128) from `min-h-[600px] md:min-h-[720px]` to `min-h-[640px] md:min-h-[820px] lg:min-h-[880px]`.
+- Widen ambient halo blur slightly (no structural change) so the bigger subject still sits in light.
 
-## 6. Studio (landing.tsx)
-- Double particle count, add slow large gold halo behind oracleLaptop that breathes.
-- Add a faint horizontal gold rule above the section title and a small "II" chapter marker (luxury editorial cue).
-- Replace the dark card hard border with a gradient border (gold→transparent) for integrated feel.
+### 4. Protect headline readability
+Because the enlarged video will visually push toward the left column on `lg`, add a soft readability layer behind the copy without changing the palette:
 
-## 7. Oracle Transmissions (landing.tsx)
-- Tighten typography hierarchy: small uppercase eyebrow → display headline → italic supporting line.
-- Add microcopy under input: "Weekly intelligence for creators building the future."
-- Stronger CTA: gradient crimson→wine with gold inner hairline and soft outer gold glow.
-- Add 5–6 drifting "transmission" particles in this section only.
-- Ensure seated oracle image presence is preserved (already used here per current code).
+- Wrap the left column's text block (the badge + h1 + paragraphs + CTAs + icon row) in a relative container with a pseudo-backdrop:
+  ```tsx
+  <div className="relative">
+    <div className="absolute -inset-6 -z-10 rounded-3xl
+                    bg-[oklch(0.985_0.012_80_/_0.55)]
+                    backdrop-blur-[2px]
+                    [mask-image:radial-gradient(ellipse_at_left,black_55%,transparent_90%)]" />
+    {/* existing badge + h1 + … */}
+  </div>
+  ```
+- Add `relative z-10` to the headline `<h1>` (already inside `z-10` column, but reinforce stacking above the video on small screens where they overlap).
+- On `lg+` increase the gap between columns from `gap-16` to `gap-20` so the larger video doesn't crowd the headline.
+- On mobile, the columns stack vertically (existing behavior), so the video sits below the text and never covers it — no further mobile work needed beyond keeping `lg:` scoped tilt/scale.
 
-## 8. About (landing.tsx)
-- Update bio copy to include the three positioning lines verbatim:
-  - "20+ years in technology. Still obsessed with building."
-  - "Cybersecurity strategist. AI consultant. Systems thinker."
-  - "Helping entrepreneurs use AI without losing their voice, values, or vision."
-- Keep portrait, layout, and surrounding structure unchanged.
+### 5. Reduced-motion + perf
+- Wrap the `[transform:…]` tilt class behind `motion-safe:` (Tailwind) so users with `prefers-reduced-motion: reduce` get a flat, non-tilted video.
+- Keep `preload="metadata"` to avoid blocking LCP; the poster frame is the video's first frame.
 
-## 9. Footer (landing.tsx)
-- Add a constellation divider (row of pulsing gold dots connected by `.thread-line`) above footer content.
-- Add large faint embossed eye watermark centered behind footer.
-- Add quote line in italic display font: "Every powerful vision begins as a thread."
-- Add a slow fading ambient glow at the very bottom edge.
-
-## 10. Mobile
-- Verify hero stacks with oracle still ≥ 420px tall and floating cards repositioned (use `md:` to keep extreme offsets desktop-only).
-- Increase mobile vertical section padding so spacing stays luxurious.
-- Ensure thread-rail is hidden < lg.
-
-## Technical notes
-- Cursor spotlight: one `useEffect` in landing.tsx attaching a throttled (rAF) `pointermove` updating `document.documentElement.style.setProperty('--mx', ...)`. Renders a single fixed `pointer-events-none` div with `background: radial-gradient(600px circle at var(--mx) var(--my), oklch(0.78 0.13 80 / 0.06), transparent 60%)`.
-- All new animations gated behind `@media (prefers-reduced-motion: no-preference)`.
-- No new dependencies. No route, schema, or backend changes.
+## Files touched
+- `src/assets/oracle-hero.mp4` (new, copied from upload)
+- `src/components/site/landing.tsx` (Hero section only)
 
 ## Out of scope
-Layout restructuring, image swaps, color/typography changes, new sections, copy rewrites beyond the About lines and Transmissions microcopy listed above.
+- No changes to palette, typography, other sections, copy, or layout outside the Hero.
+- No new dependencies.
+- `oracleStanding` PNG file is left in `src/assets/` untouched in case it's reused later; only its import is removed.
