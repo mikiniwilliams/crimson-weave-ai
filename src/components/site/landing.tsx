@@ -99,6 +99,17 @@ function Hero() {
 
   return (
     <div ref={heroRef} className="relative overflow-hidden tapestry-bg section-vignette">
+      {/* Nkyimu watermark — anchors the brand symbol behind the hero */}
+      <img
+        src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[9%] z-0 h-[520px] w-[520px] -translate-x-1/2 object-contain opacity-[0.045] md:h-[680px] md:w-[680px]"
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).src =
+            "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
+        }}
+      />
       {/* constellation — slowest parallax layer */}
       <svg
         className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
@@ -687,7 +698,18 @@ function FinalCTA() {
 function Footer() {
   return (
     <footer className="relative pt-20 pb-14 text-center text-sm text-[var(--muted-foreground)] tapestry-bg overflow-hidden">
-      <div className="max-w-3xl mx-auto px-6 mb-12 flex items-center gap-4">
+      {/* Nkyimu watermark — large, faint mark anchoring the footer */}
+      <img
+        src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
+        alt=""
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.04]"
+        onError={(e) => {
+          (e.currentTarget as HTMLImageElement).src =
+            "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
+        }}
+      />
+      <div className="relative max-w-3xl mx-auto px-6 mb-12 flex items-center gap-4">
         <div className="flex-1 h-px thread-line" />
         <span className="constellation-dot" />
         <span className="constellation-dot" style={{ opacity: 0.6 }} />

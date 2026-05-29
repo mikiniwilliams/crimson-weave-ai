@@ -10,7 +10,7 @@ export function Nav() {
               src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
               alt=""
               aria-hidden
-              className="w-7 h-7 object-contain"
+              className="w-7 h-7 object-contain nkyimu-logo-glow"
               onError={(e) => {
                 (e.currentTarget as HTMLImageElement).src =
                   "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
@@ -22,6 +22,9 @@ export function Nav() {
             <span className="text-[10px] tracking-[0.22em] text-[var(--muted-foreground)]">THE</span>
             <span className="font-display text-lg tracking-tight text-[var(--espresso)]">
               AI Vision <span className="gold-text">Weaver</span>
+            </span>
+            <span className="hidden sm:block text-[8px] font-mono tracking-[0.22em] uppercase text-[var(--gold)] mt-1">
+              Precision · Excellence · Intelligence
             </span>
           </span>
         </Link>

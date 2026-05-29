@@ -356,6 +356,11 @@
     repeating-linear-gradient(-45deg, oklch(0.42 0.16 25 / 0.04) 0 1px, transparent 1px 22px);
 }
 
+/* Nkyimu mark — soft gold halo when used as a nav/footer logo */
+.nkyimu-logo-glow {
+  filter: drop-shadow(0 0 10px oklch(0.78 0.13 80 / 0.45));
+}
+
 /* Oracle hero image — feathered edges so it blends into the tapestry instead of sitting on top */
 .oracle-woven {
   -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 45%, black 60%, transparent 92%);
