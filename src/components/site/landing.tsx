@@ -78,7 +78,7 @@ function Hero() {
         })}
       </svg>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-20 pb-28 md:pt-32 md:pb-40 grid lg:grid-cols-12 gap-14 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-32 md:pt-40 md:pb-44 grid lg:grid-cols-12 gap-16 items-center">
         <div className="lg:col-span-6 relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-[var(--wine)] mb-7">
             <Sparkles className="w-3.5 h-3.5" /> Strategy · Systems · AI · Magic
