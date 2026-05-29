@@ -1,4 +1,4 @@
-import oracleStanding from "@/assets/oracle-standing.png";
+import oracleHero from "@/assets/oracle-hero.mp4";
 import oracleLaptop from "@/assets/oracle-laptop.png";
 import oracleCloseup from "@/assets/oracle-closeup.png";
 import mikiniPortrait from "@/assets/mikini-portrait.png";
