@@ -199,20 +199,33 @@
   pointer-events: none;
 }
 
-.float-card { animation: float 7s ease-in-out infinite; }
-.float-card.delay-1 { animation-delay: 1.2s; }
-.float-card.delay-2 { animation-delay: 2.4s; }
-.float-card.delay-3 { animation-delay: 3.6s; }
+.float-card { animation: floatDrift 11s cubic-bezier(.45,.05,.55,.95) infinite; will-change: transform; }
+.float-card.delay-1 { animation-duration: 9.5s; animation-delay: -2.3s; }
+.float-card.delay-2 { animation-duration: 12s; animation-delay: -4.8s; }
+.float-card.delay-3 { animation-duration: 10.5s; animation-delay: -1.4s; }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-14px); }
+@keyframes floatDrift {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25%      { transform: translate3d(6px, -10px, 0); }
+  50%      { transform: translate3d(-4px, -16px, 0); }
+  75%      { transform: translate3d(-8px, -6px, 0); }
 }
 
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+@keyframes slowSpin {
+  to { transform: rotate(360deg); }
+}
+.slow-spin { animation: slowSpin 80s linear infinite; }
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 0.95; transform: scale(1.04); }
+}
+.breathe { animation: breathe 9s ease-in-out infinite; }
 
 .shimmer-border { position: relative; overflow: hidden; }
 .shimmer-border::after {
