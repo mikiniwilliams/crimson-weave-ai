@@ -125,18 +125,36 @@ function Hero() {
         </div>
 
         <div className="lg:col-span-6 relative">
-          <div className="relative min-h-[520px] md:min-h-[640px] flex items-center justify-center">
+          <div className="relative min-h-[600px] md:min-h-[720px] flex items-center justify-center">
             {/* layered ambient halos */}
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl ambient-glow" />
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl breathe" />
             <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.25),transparent_65%)] blur-2xl" />
-            {/* holographic ring */}
-            <div className="absolute inset-6 rounded-full border border-[oklch(0.78_0.13_80_/_0.18)]" />
-            <div className="absolute inset-16 rounded-full border border-[oklch(0.78_0.13_80_/_0.12)]" />
+            {/* holographic rings */}
+            <div className="absolute inset-4 rounded-full border border-[oklch(0.78_0.13_80_/_0.18)]" />
+            <div className="absolute inset-14 rounded-full border border-[oklch(0.78_0.13_80_/_0.12)]" />
+            <div className="absolute inset-24 rounded-full border border-[oklch(0.78_0.13_80_/_0.08)]" />
+            {/* slow rotating dashed ring */}
+            <div className="dashed-ring inset-2 slow-spin" />
+            {/* ambient particles */}
+            <div className="absolute inset-0 pointer-events-none">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <span
+                  key={i}
+                  className="particle"
+                  style={{
+                    left: `${10 + ((i * 41) % 80)}%`,
+                    top: `${55 + ((i * 23) % 35)}%`,
+                    animationDelay: `${(i * 0.9) % 7}s`,
+                    animationDuration: `${7 + (i % 4)}s`,
+                  }}
+                />
+              ))}
+            </div>
 
             <img
               src={oracleStanding}
               alt="The Crimson Oracle, AI Vision Weaver mascot, surrounded by glowing interface cards"
-              className="relative w-full max-w-xl mx-auto drop-shadow-[0_40px_70px_oklch(0.30_0.11_22_/_0.45)]"
+              className="relative w-full max-w-2xl mx-auto drop-shadow-[0_50px_80px_oklch(0.30_0.11_22_/_0.5)]"
               loading="eager"
             />
 
