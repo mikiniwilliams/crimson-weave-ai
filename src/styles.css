@@ -138,7 +138,7 @@
     oklch(0.78 0.13 80 / 0.65) 82%,
     transparent 100%);
   background-size: 200% 100%;
-  animation: threadFlow 8s linear infinite;
+  animation: threadFlow 14s linear infinite;
   filter: drop-shadow(0 0 8px oklch(0.78 0.13 80 / 0.7));
 }
 @keyframes threadFlow {
