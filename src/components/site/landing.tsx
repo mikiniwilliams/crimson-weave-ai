@@ -2,6 +2,7 @@ import oracleStanding from "@/assets/oracle-standing.png";
 import oracleLaptop from "@/assets/oracle-laptop.png";
 import oracleCloseup from "@/assets/oracle-closeup.png";
 import mikiniPortrait from "@/assets/mikini-portrait.png";
+import { useEffect } from "react";
 import { useReveal } from "@/hooks/use-reveal";
 import { Nav } from "@/components/site/nav";
 import { ThreadDivider } from "@/components/site/thread-divider";
@@ -10,6 +11,30 @@ import {
   Compass, Rocket, MessagesSquare, GraduationCap, Eye, Lock,
   ArrowRight, Mail, Brain, Network, Wrench,
 } from "lucide-react";
+
+function CursorSpotlight() {
+  useEffect(() => {
+    let raf = 0;
+    let nx = 50, ny = 30;
+    const onMove = (e: PointerEvent) => {
+      nx = (e.clientX / window.innerWidth) * 100;
+      ny = (e.clientY / window.innerHeight) * 100;
+      if (!raf) {
+        raf = requestAnimationFrame(() => {
+          document.documentElement.style.setProperty("--mx", `${nx}%`);
+          document.documentElement.style.setProperty("--my", `${ny}%`);
+          raf = 0;
+        });
+      }
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+  return <div className="cursor-spotlight" aria-hidden />;
+}
 
 function FloatingCard({
   title, icon, className = "", delay = "",
