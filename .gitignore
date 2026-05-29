@@ -32,3 +32,6 @@ dist-ssr
 *.sw?
 
 .claude/
+
+.vercel/
+dist/
