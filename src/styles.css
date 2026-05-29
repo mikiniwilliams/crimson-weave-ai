@@ -368,11 +368,13 @@
 }
 
 /* Cinematic oracle motion — the video carries the hand/body motion.
-   We just add a slow perspective tilt so she sits in 3D space. */
+   Slight horizontal nudge + perspective so she sits in 3D space and reads larger. */
 .oracle-figure {
+  width: 100%;
+  object-fit: contain;
   transform-origin: 50% 60%;
-  transform: perspective(1400px) rotateY(-5deg) rotateX(2deg) scale(1.1);
   will-change: transform;
+  transform: perspective(1400px) translateX(6%) rotateY(-4deg) rotateX(2deg) scale(1.18);
 }
 @media (prefers-reduced-motion: reduce) {
   .oracle-figure {

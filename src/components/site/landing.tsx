@@ -99,12 +99,12 @@ function Hero() {
 
   return (
     <div ref={heroRef} className="relative overflow-hidden tapestry-bg section-vignette">
-      {/* Nkyimu watermark — anchors the brand symbol behind the hero */}
+      {/* Nkyimu watermark — anchored top-right on desktop so it stops fighting the Oracle */}
       <img
         src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[9%] z-0 h-[520px] w-[520px] -translate-x-1/2 object-contain opacity-[0.045] md:h-[680px] md:w-[680px]"
+        className="pointer-events-none absolute left-1/2 top-[8%] z-0 w-[78vw] max-w-[380px] -translate-x-1/2 object-contain opacity-[0.04] md:left-auto md:right-[6%] md:top-[15%] md:w-[clamp(320px,34vw,620px)] md:max-w-none md:translate-x-0 md:opacity-[0.085]"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).src =
             "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
@@ -129,7 +129,7 @@ function Hero() {
         })}
       </svg>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-32 md:pt-40 md:pb-44 grid lg:grid-cols-12 lg:gap-20 gap-16 items-center">
+      <div className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-16 px-6 pt-28 pb-24 md:pt-36 md:pb-28 lg:grid-cols-12 lg:gap-20">
         {/* Left column — stagger reveal */}
         <div className="lg:col-span-6 relative z-10">
           <div ref={leftColRef} className="relative">
@@ -150,7 +150,10 @@ function Hero() {
               Weaving strategy, systems, AI, and design into digital products that feel like
               the future.
             </p>
-            <p data-stagger className="stagger-child mt-3 text-sm text-[var(--muted-foreground)] max-w-xl">
+            <p
+              data-stagger
+              className="stagger-child mt-3 inline-block max-w-xl rounded-[14px] bg-[rgba(255,247,235,0.72)] px-4 py-3 text-sm font-medium leading-relaxed text-[oklch(0.28_0.05_35)] shadow-[0_1px_12px_rgba(72,32,24,0.08)] backdrop-blur-[6px]"
+            >
               For entrepreneurs, consultants, and creators ready to turn ideas into intelligent
               brands, content systems, and digital income.
             </p>
@@ -184,10 +187,10 @@ function Hero() {
 
         {/* Right column — fastest parallax layer. Oracle is woven INTO the environment (no card frame). */}
         <div
-          className="lg:col-span-6 relative"
+          className="relative z-[2] lg:col-span-6"
           style={{ transform: "translateY(calc(var(--hero-y, 0px) * -0.13))", willChange: "transform" }}
         >
-          <div className="relative min-h-[640px] md:min-h-[820px] lg:min-h-[920px] flex items-center justify-center">
+          <div className="relative flex min-h-[700px] items-center justify-center md:min-h-[900px] lg:min-h-[1100px]">
             {/* layered ambient halos */}
             <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl breathe" />
             <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.28),transparent_65%)] blur-2xl" />
@@ -249,7 +252,7 @@ function Hero() {
               playsInline
               preload="metadata"
               aria-label="The Crimson Oracle, AI Vision Weaver guide"
-              className="oracle-figure relative w-full max-w-3xl lg:max-w-[42rem] xl:max-w-[48rem] mx-auto lg:-mr-6 xl:-mr-10 drop-shadow-[0_70px_110px_oklch(0.30_0.11_22_/_0.55)] oracle-woven"
+              className="oracle-figure relative mx-auto w-full max-w-[clamp(520px,48vw,760px)] drop-shadow-[0_70px_110px_oklch(0.30_0.11_22_/_0.55)] oracle-woven"
             />
 
             {/* Floating interface panels */}
