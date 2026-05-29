@@ -16,8 +16,18 @@ export const Route = createFileRoute("/")({
         content:
           "Strategy, systems, AI, and design woven into intelligent brands and digital income.",
       },
+      { property: "og:url", content: "https://www.theaivisionweaver.com/" },
+      { property: "og:site_name", content: "The AI Vision Weaver" },
+      { name: "twitter:url", content: "https://www.theaivisionweaver.com/" },
+      { name: "twitter:title", content: "The AI Vision Weaver" },
+      {
+        name: "twitter:description",
+        content:
+          "Strategy, systems, AI, and design woven into intelligent brands and digital income.",
+      },
     ],
     links: [
+      { rel: "canonical", href: "https://www.theaivisionweaver.com/" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap",

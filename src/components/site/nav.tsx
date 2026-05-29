@@ -1,13 +1,21 @@
 import { Link } from "@tanstack/react-router";
-import { Eye } from "lucide-react";
 
 export function Nav() {
   return (
     <header className="sticky top-0 z-40 backdrop-blur-md bg-[oklch(0.965_0.018_80_/_0.75)] border-b border-[oklch(0.78_0.13_80_/_0.2)]">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 group">
-          <span className="relative inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--wine)] text-[var(--gold)] shadow-[0_0_24px_oklch(0.78_0.13_80_/_0.35)]">
-            <Eye className="w-4 h-4" strokeWidth={1.8} />
+          <span className="relative inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--wine)] shadow-[0_0_24px_oklch(0.78_0.13_80_/_0.35)] overflow-hidden">
+            <img
+              src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
+              alt=""
+              aria-hidden
+              className="w-7 h-7 object-contain"
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).src =
+                  "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
+              }}
+            />
             <span className="absolute inset-0 rounded-full ring-1 ring-[oklch(0.78_0.13_80_/_0.5)]" />
           </span>
           <span className="flex flex-col leading-none">
