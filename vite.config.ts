@@ -12,4 +12,15 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Deploy target. Lovable's default Nitro preset is "cloudflare"; we ship on Vercel,
+  // so honor the NITRO_PRESET env var (Vercel sets it) and fall back to "vercel".
+  // The vercel preset emits Vercel Build Output API v3 — Vercel expects it at .vercel/output/.
+  nitro: {
+    preset: process.env.NITRO_PRESET || "vercel",
+    output: {
+      dir: ".vercel/output",
+      publicDir: ".vercel/output/static",
+      serverDir: ".vercel/output/functions/__server.func",
+    },
+  },
 });
