@@ -78,54 +78,61 @@ function Hero() {
         })}
       </svg>
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-32 md:pt-40 md:pb-44 grid lg:grid-cols-12 gap-16 items-center">
+      <div className="relative max-w-7xl mx-auto px-6 pt-28 pb-32 md:pt-40 md:pb-44 grid lg:grid-cols-12 lg:gap-20 gap-16 items-center">
         <div className="lg:col-span-6 relative z-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 uppercase tracking-[0.25em] mb-7 text-xs">
-            <Sparkles className="w-3.5 h-3.5" /> Strategy · Systems · AI · Magic
-          </div>
-          <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-[var(--espresso)]">
-            The <span className="gold-text italic">AI</span>
-            <br />
-            Vision <span className="text-[var(--crimson)]">Weaver</span>
-          </h1>
-          <p className="mt-7 text-lg text-[var(--espresso)]/80 max-w-xl leading-relaxed">
-            Weaving strategy, systems, AI, and design into digital products that feel like
-            the future.
-          </p>
-          <p className="mt-3 text-sm text-[var(--muted-foreground)] max-w-xl">
-            For entrepreneurs, consultants, and creators ready to turn ideas into intelligent
-            brands, content systems, and digital income.
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <a href="#studio" className="btn-primary px-7 py-3.5 rounded-full font-medium tracking-wide inline-flex items-center gap-2">
-              Enter the Studio <ArrowRight className="w-4 h-4" />
-            </a>
-            <a href="#vault" className="btn-ghost-gold px-7 py-3.5 rounded-full font-medium tracking-wide inline-flex items-center gap-2">
-              Explore the Vault
-            </a>
-          </div>
+          <div className="relative">
+            <div
+              aria-hidden
+              className="absolute -inset-6 -z-10 rounded-3xl bg-[oklch(0.985_0.012_80_/_0.55)] backdrop-blur-[2px]"
+              style={{ maskImage: "radial-gradient(ellipse at left, black 55%, transparent 90%)", WebkitMaskImage: "radial-gradient(ellipse at left, black 55%, transparent 90%)" }}
+            />
+            <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.1)] px-4 py-1.5 uppercase tracking-[0.25em] mb-7 text-xs">
+              <Sparkles className="w-3.5 h-3.5" /> Strategy · Systems · AI · Magic
+            </div>
+            <h1 className="relative z-10 font-display text-5xl md:text-6xl lg:text-7xl font-medium leading-[1.02] text-[var(--espresso)]">
+              The <span className="gold-text italic">AI</span>
+              <br />
+              Vision <span className="text-[var(--crimson)]">Weaver</span>
+            </h1>
+            <p className="mt-7 text-lg text-[var(--espresso)]/80 max-w-xl leading-relaxed">
+              Weaving strategy, systems, AI, and design into digital products that feel like
+              the future.
+            </p>
+            <p className="mt-3 text-sm text-[var(--muted-foreground)] max-w-xl">
+              For entrepreneurs, consultants, and creators ready to turn ideas into intelligent
+              brands, content systems, and digital income.
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <a href="#studio" className="btn-primary px-7 py-3.5 rounded-full font-medium tracking-wide inline-flex items-center gap-2">
+                Enter the Studio <ArrowRight className="w-4 h-4" />
+              </a>
+              <a href="#vault" className="btn-ghost-gold px-7 py-3.5 rounded-full font-medium tracking-wide inline-flex items-center gap-2">
+                Explore the Vault
+              </a>
+            </div>
 
-          <div className="mt-12 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-lg">
-            {[
-              { icon: <Brain className="w-4 h-4" />, label: "Prompts" },
-              { icon: <Palette className="w-4 h-4" />, label: "Branding" },
-              { icon: <Network className="w-4 h-4" />, label: "Systems" },
-              { icon: <FileCode2 className="w-4 h-4" />, label: "Content" },
-              { icon: <Workflow className="w-4 h-4" />, label: "Automate" },
-              { icon: <Layers className="w-4 h-4" />, label: "Products" },
-            ].map((p) => (
-              <div key={p.label} className="flex flex-col items-center gap-1.5 text-[var(--espresso)]/70">
-                <span className="w-9 h-9 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] flex items-center justify-center text-[var(--crimson)]">
-                  {p.icon}
-                </span>
-                <span className="text-[10px] uppercase tracking-wider">{p.label}</span>
-              </div>
-            ))}
+            <div className="mt-12 grid grid-cols-3 sm:grid-cols-6 gap-4 max-w-lg">
+              {[
+                { icon: <Brain className="w-4 h-4" />, label: "Prompts" },
+                { icon: <Palette className="w-4 h-4" />, label: "Branding" },
+                { icon: <Network className="w-4 h-4" />, label: "Systems" },
+                { icon: <FileCode2 className="w-4 h-4" />, label: "Content" },
+                { icon: <Workflow className="w-4 h-4" />, label: "Automate" },
+                { icon: <Layers className="w-4 h-4" />, label: "Products" },
+              ].map((p) => (
+                <div key={p.label} className="flex flex-col items-center gap-1.5 text-[var(--espresso)]/70">
+                  <span className="w-9 h-9 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] flex items-center justify-center text-[var(--crimson)]">
+                    {p.icon}
+                  </span>
+                  <span className="text-[10px] uppercase tracking-wider">{p.label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         <div className="lg:col-span-6 relative">
-          <div className="relative min-h-[600px] md:min-h-[720px] flex items-center justify-center">
+          <div className="relative min-h-[640px] md:min-h-[820px] lg:min-h-[880px] flex items-center justify-center">
             {/* layered ambient halos */}
             <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl breathe" />
             <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.25),transparent_65%)] blur-2xl" />
@@ -151,11 +158,15 @@ function Hero() {
               ))}
             </div>
 
-            <img
-              src={oracleStanding}
-              alt="The Crimson Oracle, AI Vision Weaver mascot, surrounded by glowing interface cards"
-              className="relative w-full max-w-2xl mx-auto drop-shadow-[0_50px_80px_oklch(0.30_0.11_22_/_0.5)]"
-              loading="eager"
+            <video
+              src={oracleHero}
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              aria-label="The Crimson Oracle, AI Vision Weaver mascot"
+              className="relative w-full max-w-3xl lg:max-w-[44rem] xl:max-w-[50rem] mx-auto lg:-mr-10 xl:-mr-16 scale-110 md:scale-[1.18] lg:scale-[1.25] motion-safe:[transform:perspective(1400px)_rotateY(-6deg)_rotateX(2deg)] drop-shadow-[0_70px_110px_oklch(0.30_0.11_22_/_0.55)] rounded-[2rem]"
             />
 
             {/* floating cards overlay */}
