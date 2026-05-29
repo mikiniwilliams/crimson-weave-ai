@@ -62,7 +62,7 @@ function Section({
 
 function Hero() {
   return (
-    <div className="relative overflow-hidden tapestry-bg">
+    <div className="relative overflow-hidden tapestry-bg section-vignette">
       {/* constellation background */}
       <svg className="absolute inset-0 w-full h-full opacity-40 pointer-events-none" aria-hidden>
         <defs>
