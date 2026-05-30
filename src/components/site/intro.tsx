@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-const SESSION_KEY = "avw-intro-seen";
+const SESSION_KEY = "aiVisionWeaverIntroSeen";
 
 // Full-screen cinematic intro. Shows once per session.
-// Sequence (~5s total): logo settles → threads weave → countdown 3-2-1 → "Enter" → fade out.
+// Sequence: logo settles → threads weave → countdown 3-2-1 → pause on "Enter the Studio".
+// The site stays hidden until the visitor clicks "Enter the Studio" or "Skip".
 export function Intro() {
   const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState<"in" | "out">("in");
@@ -14,40 +15,43 @@ export function Intro() {
     if (typeof window === "undefined") return;
     if (sessionStorage.getItem(SESSION_KEY)) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      // Honor reduced motion: do not show the intro at all.
-      sessionStorage.setItem(SESSION_KEY, "1");
-      return;
-    }
-
     setMounted(true);
     document.documentElement.style.overflow = "hidden";
 
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // Skip button appears after 1s in both modes.
     const skipT = window.setTimeout(() => setShowSkip(true), 1000);
+
+    if (reduced) {
+      // Reduced motion: show the veil briefly, then jump straight to "Enter the Studio".
+      // Still requires a click — never auto-enters.
+      const enterT = window.setTimeout(() => setCount(0), 400);
+      return () => {
+        window.clearTimeout(skipT);
+        window.clearTimeout(enterT);
+        document.documentElement.style.overflow = "";
+      };
+    }
+
+    // Full countdown sequence. After 0, we pause on "Enter the Studio" and wait for a click.
     const c3 = window.setTimeout(() => setCount(2), 2200);
     const c2 = window.setTimeout(() => setCount(1), 3200);
     const c1 = window.setTimeout(() => setCount(0), 4200);
-    const outT = window.setTimeout(() => setPhase("out"), 5000);
-    const doneT = window.setTimeout(() => {
-      sessionStorage.setItem(SESSION_KEY, "1");
-      document.documentElement.style.overflow = "";
-      setMounted(false);
-    }, 5800);
 
     return () => {
-      [skipT, c3, c2, c1, outT, doneT].forEach(window.clearTimeout);
+      [skipT, c3, c2, c1].forEach(window.clearTimeout);
       document.documentElement.style.overflow = "";
     };
   }, []);
 
   if (!mounted) return null;
 
-  const skip = () => {
-    sessionStorage.setItem(SESSION_KEY, "1");
+  const dismiss = () => {
+    sessionStorage.setItem(SESSION_KEY, "true");
     document.documentElement.style.overflow = "";
     setPhase("out");
-    window.setTimeout(() => setMounted(false), 600);
+    window.setTimeout(() => setMounted(false), 700);
   };
 
   return (
@@ -82,7 +86,6 @@ export function Intro() {
             <stop offset="100%" stopColor="#e8c46a" stopOpacity="0" />
           </linearGradient>
         </defs>
-        {/* concentric arcs that "draw" around the logo */}
         <circle cx="400" cy="400" r="220" stroke="url(#intro-thread)" strokeWidth="1" fill="none" className="intro-thread-arc" />
         <circle cx="400" cy="400" r="270" stroke="url(#intro-thread)" strokeWidth="0.8" fill="none" className="intro-thread-arc d2" />
         <circle cx="400" cy="400" r="320" stroke="url(#intro-thread)" strokeWidth="0.6" fill="none" className="intro-thread-arc d3" />
@@ -109,20 +112,27 @@ export function Intro() {
         <div className="intro-logo-halo" aria-hidden />
       </div>
 
-      {/* copy */}
+      {/* copy + countdown/CTA */}
       <div className="intro-copy">
         <p className="intro-tagline">The Oracle is weaving your transmission…</p>
         <div className="intro-count" aria-live="polite">
           {count > 0 ? (
             <span key={count} className="intro-count-num">{count}</span>
           ) : (
-            <span className="intro-enter">Enter the Studio</span>
+            <button
+              type="button"
+              onClick={dismiss}
+              className="intro-enter-btn"
+              autoFocus
+            >
+              Enter the Studio
+            </button>
           )}
         </div>
       </div>
 
       {showSkip && (
-        <button type="button" onClick={skip} className="intro-skip">
+        <button type="button" onClick={dismiss} className="intro-skip">
           Skip
         </button>
       )}

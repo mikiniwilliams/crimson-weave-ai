@@ -1,8 +1,9 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStaggerReveal } from "@/hooks/use-reveal";
 import { Nav } from "@/components/site/nav";
 import { CelestialDivider, ThreadPatternSvg } from "@/components/site/patterns";
 import { Intro } from "@/components/site/intro";
+import { loadActiveProducts, type Product } from "@/lib/products";
 import {
   Sparkles, Wand2, Workflow, Palette, BookOpen, Layers, FileCode2,
   Compass, Rocket, MessagesSquare, GraduationCap, Eye, Lock,
@@ -371,18 +372,37 @@ function Tapestry() {
   );
 }
 
-const vaultProducts = [
-  { icon: <Brain />, title: "Oracle Prompt Vault", desc: "200+ premium AI prompts for brand, content, and strategy.", price: "$47" },
-  { icon: <Palette />, title: "AI Brand Weaver Kit", desc: "Brand voice, identity, and positioning playbook.", price: "$97" },
-  { icon: <FileCode2 />, title: "Crimson Content System", desc: "A weekly content engine powered by AI and intention.", price: "$67" },
-  { icon: <Eye />, title: "Website Audit Blueprint", desc: "Diagnose, refine, and elevate your digital presence.", price: "$37" },
-  { icon: <Rocket />, title: "Digital Product Starter Kit", desc: "Launch your first digital product in seven days.", price: "$57" },
-  { icon: <Layers />, title: "Canva Marketing Templates", desc: "120 luxe templates for socials, lead magnets, and decks.", price: "$29" },
-];
+// Map a product category to the existing Vault icon vocabulary so the visual
+// treatment stays identical when products load from Supabase.
+function iconForCategory(category: string): React.ReactNode {
+  const c = category.toLowerCase();
+  if (c.includes("prompt")) return <Brain />;
+  if (c.includes("brand")) return <Palette />;
+  if (c.includes("content")) return <FileCode2 />;
+  if (c.includes("strategy") || c.includes("audit")) return <Eye />;
+  if (c.includes("system") || c.includes("product")) return <Rocket />;
+  if (c.includes("design") || c.includes("template")) return <Layers />;
+  return <Layers />;
+}
 
 function Vault() {
   const introRef = useStaggerReveal<HTMLDivElement>(130);
   const gridRef = useStaggerReveal<HTMLDivElement>(80);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    loadActiveProducts()
+      .then((rows) => {
+        if (!cancelled) setProducts(rows);
+      })
+      .catch(() => {
+        /* loader already falls back to local; ignore */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <Section id="vault" className="py-24">
@@ -397,36 +417,57 @@ function Vault() {
         </p>
       </div>
       <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {vaultProducts.map((p) => (
-          <article
-            key={p.title}
-            data-stagger
-            className="stagger-child group relative glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-500"
-          >
-            <div className="relative h-44 bg-gradient-to-br from-[var(--wine)] to-[oklch(0.22_0.07_25)] flex items-center justify-center overflow-hidden">
-              <div className="absolute inset-0 weave-pattern opacity-60" />
-              <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_30%,oklch(0.78_0.13_80_/_0.6),transparent_55%)]" />
-              <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.45)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8 shadow-[0_0_30px_oklch(0.78_0.13_80_/_0.4)_inset] group-hover:scale-105 transition-transform duration-500">
-                {p.icon}
-              </span>
-              <Lock className="absolute top-4 right-4 w-4 h-4 text-[var(--gold)]/60" />
-              <span className="absolute bottom-3 left-4 text-[10px] tracking-[0.3em] uppercase text-[var(--gold)]/70">Artifact · 0{(vaultProducts.indexOf(p) + 1)}</span>
-            </div>
-            <div className="relative p-6 flex-1 flex flex-col">
-              <span className="oracle-watermark" aria-hidden />
-              <h3 className="font-display text-xl text-[var(--espresso)]">{p.title}</h3>
-              <p className="mt-2 text-sm text-[var(--espresso)]/70 flex-1 relative">{p.desc}</p>
-              <div className="mt-5 flex items-center justify-between relative">
-                <span className="font-display text-2xl text-[var(--crimson)]">{p.price}</span>
-                <button className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 group-hover:text-[var(--crimson)] transition-all">
-                  View Product <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+        {products.map((p, i) => {
+          const artifactNum = String(i + 1).padStart(2, "0");
+          const href = p.stripePaymentLink || `#${p.slug}`;
+          const isExternal = Boolean(p.stripePaymentLink);
+          return (
+            <article
+              key={p.id}
+              data-stagger
+              className="stagger-child group relative glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-500"
+            >
+              <div className="relative h-44 bg-gradient-to-br from-[var(--wine)] to-[oklch(0.22_0.07_25)] flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 weave-pattern opacity-60" />
+                <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_30%,oklch(0.78_0.13_80_/_0.6),transparent_55%)]" />
+                {p.image ? (
+                  <img
+                    src={p.image}
+                    alt=""
+                    aria-hidden
+                    className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-[1.04] transition-transform duration-700"
+                  />
+                ) : null}
+                <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.45)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8 shadow-[0_0_30px_oklch(0.78_0.13_80_/_0.4)_inset] group-hover:scale-105 transition-transform duration-500">
+                  {iconForCategory(p.category)}
+                </span>
+                <Lock className="absolute top-4 right-4 w-4 h-4 text-[var(--gold)]/60" />
+                <span className="absolute bottom-3 left-4 text-[10px] tracking-[0.3em] uppercase text-[var(--gold)]/70">
+                  Artifact · {artifactNum}
+                </span>
               </div>
-              <span className="pointer-events-none absolute top-2 left-2 w-3 h-3 border-l border-t border-[var(--gold)]/40" />
-              <span className="pointer-events-none absolute top-2 right-2 w-3 h-3 border-r border-t border-[var(--gold)]/40" />
-            </div>
-          </article>
-        ))}
+              <div className="relative p-6 flex-1 flex flex-col">
+                <span className="oracle-watermark" aria-hidden />
+                <h3 className="font-display text-xl text-[var(--espresso)]">{p.title}</h3>
+                <p className="mt-2 text-sm text-[var(--espresso)]/70 flex-1 relative">{p.description}</p>
+                <div className="mt-5 flex items-center justify-between relative">
+                  <span className="font-display text-2xl text-[var(--crimson)]">{p.price}</span>
+                  <a
+                    href={href}
+                    {...(isExternal
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 group-hover:text-[var(--crimson)] transition-all"
+                  >
+                    {p.ctaLabel} <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+                <span className="pointer-events-none absolute top-2 left-2 w-3 h-3 border-l border-t border-[var(--gold)]/40" />
+                <span className="pointer-events-none absolute top-2 right-2 w-3 h-3 border-r border-t border-[var(--gold)]/40" />
+              </div>
+            </article>
+          );
+        })}
       </div>
     </Section>
   );
