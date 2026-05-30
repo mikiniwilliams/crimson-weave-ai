@@ -83,6 +83,10 @@ async function handleEvent(event: Stripe.Event) {
       await onCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
       break;
 
+    case "checkout.session.async_payment_failed":
+      await onCheckoutFailed(event.data.object as Stripe.Checkout.Session);
+      break;
+
     case "payment_intent.payment_failed":
       await onPaymentFailed(event.data.object as Stripe.PaymentIntent);
       break;
@@ -138,6 +142,24 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
     .from("orders")
     .upsert(row, { onConflict: "stripe_session_id" });
   if (error) throw error;
+}
+
+async function onCheckoutFailed(session: Stripe.Checkout.Session) {
+  const sb = getSupabaseAdmin();
+  if (!sb) return;
+  // If we never persisted this session (e.g. the async payment failed before
+  // a 'completed' event arrived), upsert a row so the failure is recorded.
+  const row = {
+    stripe_session_id: session.id,
+    stripe_payment_intent_id:
+      typeof session.payment_intent === "string" ? session.payment_intent : null,
+    customer_email: session.customer_details?.email ?? session.customer_email ?? null,
+    amount_total: session.amount_total ?? null,
+    currency: session.currency ?? "usd",
+    status: "failed",
+    metadata: session.metadata ?? {},
+  };
+  await sb.from("orders").upsert(row, { onConflict: "stripe_session_id" });
 }
 
 async function onPaymentFailed(intent: Stripe.PaymentIntent) {
