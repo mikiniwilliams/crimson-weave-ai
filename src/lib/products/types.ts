@@ -17,6 +17,7 @@ export interface Product {
   image: string | null;
   slug: string;
   stripePaymentLink: string | null;
+  stripePriceId: string | null;
   isPaidProduct: boolean;
   deliveryType: ProductDeliveryType;
   sortOrder: number;
@@ -37,6 +38,7 @@ export interface ProductRow {
   image_url: string | null;
   slug: string;
   stripe_payment_link: string | null;
+  stripe_price_id: string | null;
   is_paid_product: boolean;
   delivery_type: ProductDeliveryType;
   sort_order: number;
@@ -57,6 +59,7 @@ export function mapRowToProduct(row: ProductRow): Product {
     image: row.image_url,
     slug: row.slug,
     stripePaymentLink: row.stripe_payment_link,
+    stripePriceId: row.stripe_price_id,
     isPaidProduct: row.is_paid_product,
     deliveryType: row.delivery_type,
     sortOrder: row.sort_order,
@@ -65,9 +68,11 @@ export function mapRowToProduct(row: ProductRow): Product {
   };
 }
 
-export function mapProductToRow(p: Product): ProductRow {
+// Insertable subset — id/created_at/updated_at are filled by the DB on insert.
+export type ProductWriteRow = Omit<ProductRow, "id" | "created_at" | "updated_at">;
+
+export function mapProductToWriteRow(p: Omit<Product, "id" | "createdAt" | "updatedAt">): ProductWriteRow {
   return {
-    id: p.id,
     title: p.title,
     category: p.category,
     description: p.description,
@@ -78,10 +83,9 @@ export function mapProductToRow(p: Product): ProductRow {
     image_url: p.image,
     slug: p.slug,
     stripe_payment_link: p.stripePaymentLink,
+    stripe_price_id: p.stripePriceId,
     is_paid_product: p.isPaidProduct,
     delivery_type: p.deliveryType,
     sort_order: p.sortOrder,
-    created_at: p.createdAt,
-    updated_at: p.updatedAt,
   };
 }
