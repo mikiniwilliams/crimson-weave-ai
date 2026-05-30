@@ -387,8 +387,9 @@ function iconForCategory(category: string): React.ReactNode {
 
 function Vault() {
   const introRef = useStaggerReveal<HTMLDivElement>(130);
-  const gridRef = useStaggerReveal<HTMLDivElement>(80);
   const [products, setProducts] = useState<Product[]>([]);
+  // Re-observe stagger children when products arrive so async-loaded cards reveal.
+  const gridRef = useStaggerReveal<HTMLDivElement>(80, 0, products.length);
 
   useEffect(() => {
     let cancelled = false;
