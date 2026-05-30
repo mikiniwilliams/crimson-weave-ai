@@ -59,7 +59,7 @@ export function Intro() {
       className={`intro-veil ${phase === "out" ? "intro-out" : ""}`}
       aria-hidden={phase === "out"}
       role="dialog"
-      aria-label="The Oracle is weaving your transmission"
+      aria-label="The Oracle is preparing your transmission"
     >
       {/* particle field */}
       <div className="intro-particles" aria-hidden>
@@ -114,7 +114,7 @@ export function Intro() {
 
       {/* copy + countdown/CTA */}
       <div className="intro-copy">
-        <p className="intro-tagline">The Oracle is weaving your transmission…</p>
+        <p className="intro-tagline">The Oracle is preparing your transmission…</p>
         <div className="intro-count" aria-live="polite">
           {count > 0 ? (
             <span key={count} className="intro-count-num">{count}</span>

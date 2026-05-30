@@ -361,6 +361,48 @@
   filter: drop-shadow(0 0 10px oklch(0.78 0.13 80 / 0.45));
 }
 
+/* Hero Nkyimu watermark — celestial diagram beside the Oracle.
+   - Wrapper carries a slow opacity drift around a breakpoint-dependent base.
+   - Inner img rotates very slowly and pulses a soft gold halo.
+   The three animations are intentionally out of sync (40s / 12s / 14s) so the
+   motion never feels like a single repeating loop. */
+.nkyimu-watermark-wrap {
+  --nkyimu-base-opacity: 0.05;
+  opacity: var(--nkyimu-base-opacity);
+  animation: nkyimuOpacityDrift 14s ease-in-out infinite;
+}
+@media (min-width: 768px) {
+  .nkyimu-watermark-wrap {
+    --nkyimu-base-opacity: 0.08;
+  }
+}
+
+.nkyimu-watermark {
+  transform-origin: center;
+  animation: nkyimuRotate 40s linear infinite, nkyimuPulse 12s ease-in-out infinite;
+  will-change: transform, filter;
+}
+
+@keyframes nkyimuRotate {
+  to { transform: rotate(360deg); }
+}
+@keyframes nkyimuPulse {
+  0%, 100% { filter: drop-shadow(0 0 0 oklch(0.78 0.13 80 / 0)); }
+  50%      { filter: drop-shadow(0 0 14px oklch(0.78 0.13 80 / 0.45)); }
+}
+@keyframes nkyimuOpacityDrift {
+  0%, 100% { opacity: var(--nkyimu-base-opacity); }
+  50%      { opacity: calc(var(--nkyimu-base-opacity) * 1.4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nkyimu-watermark,
+  .nkyimu-watermark-wrap {
+    animation: none !important;
+    opacity: var(--nkyimu-base-opacity);
+  }
+}
+
 /* Oracle hero image — feathered edges so it blends into the tapestry instead of sitting on top */
 .oracle-woven {
   -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 45%, black 60%, transparent 92%);
@@ -375,10 +417,10 @@
   will-change: transform;
   transform: perspective(1400px) translateX(6%) rotateY(-4deg) rotateX(2deg) scale(1.18);
 }
-/* Desktop: push the Oracle ~90px further right so she balances the wider text column. */
+/* Desktop: shift the Oracle 80px to the right so she balances the wider text column. */
 @media (min-width: 1024px) {
   .oracle-figure {
-    transform: perspective(1400px) translateX(calc(6% + 90px)) rotateY(-4deg) rotateX(2deg) scale(1.18);
+    transform: perspective(1400px) translateX(80px) rotateY(-4deg) rotateX(2deg) scale(1.18);
   }
 }
 @media (prefers-reduced-motion: reduce) {

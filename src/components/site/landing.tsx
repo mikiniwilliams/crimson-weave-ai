@@ -100,17 +100,24 @@ function Hero() {
 
   return (
     <div ref={heroRef} className="relative overflow-hidden tapestry-bg section-vignette">
-      {/* Nkyimu watermark — anchored top-left on desktop so it sits behind the headline + copy */}
-      <img
-        src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
-        alt=""
+      {/* Nkyimu watermark — beside the Oracle on desktop, a celestial sigil that slowly rotates
+          and pulses. Wrapper holds positioning (so translateX from -1/2 doesn't fight the inner
+          rotation); inner img owns the animation. */}
+      <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[8%] z-0 w-[78vw] max-w-[380px] -translate-x-1/2 object-contain opacity-[0.04] md:right-auto md:left-[4%] md:top-[18%] md:w-[clamp(320px,34vw,620px)] md:max-w-none md:translate-x-0 md:opacity-[0.085]"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src =
-            "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
-        }}
-      />
+        className="nkyimu-watermark-wrap pointer-events-none absolute left-1/2 top-[8%] z-0 w-[78vw] max-w-[380px] -translate-x-1/2 md:left-auto md:right-[8%] md:top-[15%] md:w-[clamp(320px,30vw,560px)] md:max-w-none md:translate-x-0"
+      >
+        <img
+          src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
+          alt=""
+          aria-hidden
+          className="nkyimu-watermark w-full h-auto object-contain"
+          onError={(e) => {
+            (e.currentTarget as HTMLImageElement).src =
+              "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
+          }}
+        />
+      </div>
       {/* constellation — slowest parallax layer */}
       <svg
         className="absolute inset-0 w-full h-full opacity-40 pointer-events-none"
@@ -153,7 +160,7 @@ function Hero() {
             </p>
             <p
               data-stagger
-              className="stagger-child mt-3 inline-block max-w-xl rounded-[14px] bg-[rgba(255,247,235,0.72)] px-4 py-3 text-sm font-medium leading-relaxed text-[oklch(0.28_0.05_35)] shadow-[0_1px_12px_rgba(72,32,24,0.08)] backdrop-blur-[6px]"
+              className="stagger-child mt-3 inline-block max-w-xl rounded-[14px] border border-[oklch(0.78_0.13_80_/_0.25)] bg-[rgba(255,247,235,0.92)] px-4 py-3 text-sm font-semibold leading-relaxed text-[oklch(0.20_0.05_35)] shadow-[0_2px_16px_rgba(72,32,24,0.12)] backdrop-blur-[8px]"
             >
               For entrepreneurs, consultants, and creators ready to turn ideas into intelligent
               brands, content systems, and digital income.
@@ -195,8 +202,9 @@ function Hero() {
         >
           <div className="relative flex min-h-[700px] items-center justify-center md:min-h-[900px] lg:min-h-[1100px]">
             {/* layered ambient halos */}
-            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl breathe" />
-            <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.28),transparent_65%)] blur-2xl" />
+            {/* hero glow overlays reduced ~20% so headline reads as the focal point */}
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,oklch(0.78_0.13_80_/_0.36),transparent_60%)] blur-3xl breathe" />
+            <div className="absolute inset-10 rounded-full bg-[radial-gradient(circle_at_50%_40%,oklch(0.42_0.16_25_/_0.22),transparent_65%)] blur-2xl" />
             {/* concentric thread rings */}
             <div className="absolute inset-4 rounded-full border border-[oklch(0.78_0.13_80_/_0.18)]" />
             <div className="absolute inset-14 rounded-full border border-[oklch(0.78_0.13_80_/_0.12)]" />
