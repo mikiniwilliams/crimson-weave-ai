@@ -19,8 +19,12 @@ import process from "node:process";
 export function getServerConfig() {
   return {
     nodeEnv: process.env.NODE_ENV,
-    // Add server-only values here, e.g.:
-    //   databaseUrl: process.env.DATABASE_URL,
-    //   stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    // Stripe — never expose these to the browser.
+    stripeSecretKey: process.env.STRIPE_SECRET_KEY,
+    stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+    // Supabase — service-role key is server-only. The anon key on the client
+    // (VITE_SUPABASE_ANON_KEY) is a separate, public value.
+    supabaseUrl: process.env.SUPABASE_URL ?? process.env.VITE_SUPABASE_URL,
+    supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
   };
 }
