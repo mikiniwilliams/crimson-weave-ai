@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 
 const SESSION_KEY = "aiVisionWeaverIntroSeen";
 
-// Full-screen cinematic intro. Shows once per session.
-// Sequence: logo settles → threads weave → countdown 3-2-1 → pause on "Enter the Studio".
-// The site stays hidden until the visitor clicks "Enter the Studio" or "Skip".
+// Sequence beats: preparing → 3 ritual words → "Enter the Studio" button.
+// Site stays hidden until the visitor clicks Enter the Studio (or Skip).
+const RITUAL_WORDS = ["Precision.", "Excellence.", "Intelligence."] as const;
+
+// Phase: -1 = tagline only (Screen 1), 0..2 = ritual words (Screen 2), 3 = button (Screen 3).
+type Phase = -1 | 0 | 1 | 2 | 3;
+
 export function Intro() {
   const [mounted, setMounted] = useState(false);
-  const [phase, setPhase] = useState<"in" | "out">("in");
+  const [veilOut, setVeilOut] = useState(false);
   const [showSkip, setShowSkip] = useState(false);
-  const [count, setCount] = useState<3 | 2 | 1 | 0>(3);
+  const [phase, setPhase] = useState<Phase>(-1);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -19,14 +23,11 @@ export function Intro() {
     document.documentElement.style.overflow = "hidden";
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    // Skip button appears after 1s in both modes.
     const skipT = window.setTimeout(() => setShowSkip(true), 1000);
 
     if (reduced) {
-      // Reduced motion: show the veil briefly, then jump straight to "Enter the Studio".
-      // Still requires a click — never auto-enters.
-      const enterT = window.setTimeout(() => setCount(0), 400);
+      // Reduced motion: brief intro, jump straight to the button. Still click-to-enter.
+      const enterT = window.setTimeout(() => setPhase(3), 400);
       return () => {
         window.clearTimeout(skipT);
         window.clearTimeout(enterT);
@@ -34,13 +35,17 @@ export function Intro() {
       };
     }
 
-    // Full countdown sequence. After 0, we pause on "Enter the Studio" and wait for a click.
-    const c3 = window.setTimeout(() => setCount(2), 2200);
-    const c2 = window.setTimeout(() => setCount(1), 3200);
-    const c1 = window.setTimeout(() => setCount(0), 4200);
+    // Slow, intentional cadence. Each ritual word lingers ~1.2s.
+    const timers = [
+      window.setTimeout(() => setPhase(0), 2200),  // Precision.
+      window.setTimeout(() => setPhase(1), 3400),  // Excellence.
+      window.setTimeout(() => setPhase(2), 4600),  // Intelligence.
+      window.setTimeout(() => setPhase(3), 5800),  // → button
+    ];
 
     return () => {
-      [skipT, c3, c2, c1].forEach(window.clearTimeout);
+      window.clearTimeout(skipT);
+      timers.forEach(window.clearTimeout);
       document.documentElement.style.overflow = "";
     };
   }, []);
@@ -50,14 +55,14 @@ export function Intro() {
   const dismiss = () => {
     sessionStorage.setItem(SESSION_KEY, "true");
     document.documentElement.style.overflow = "";
-    setPhase("out");
+    setVeilOut(true);
     window.setTimeout(() => setMounted(false), 700);
   };
 
   return (
     <div
-      className={`intro-veil ${phase === "out" ? "intro-out" : ""}`}
-      aria-hidden={phase === "out"}
+      className={`intro-veil ${veilOut ? "intro-out" : ""}`}
+      aria-hidden={veilOut}
       role="dialog"
       aria-label="The Oracle is preparing your transmission"
     >
@@ -112,13 +117,16 @@ export function Intro() {
         <div className="intro-logo-halo" aria-hidden />
       </div>
 
-      {/* copy + countdown/CTA */}
+      {/* copy + ritual words / CTA */}
       <div className="intro-copy">
         <p className="intro-tagline">The Oracle is preparing your transmission…</p>
-        <div className="intro-count" aria-live="polite">
-          {count > 0 ? (
-            <span key={count} className="intro-count-num">{count}</span>
-          ) : (
+        <div className="intro-stage" aria-live="polite">
+          {phase >= 0 && phase <= 2 && (
+            <span key={phase} className="intro-ritual-word">
+              {RITUAL_WORDS[phase]}
+            </span>
+          )}
+          {phase === 3 && (
             <button
               type="button"
               onClick={dismiss}

@@ -4,6 +4,28 @@ import { localProducts } from "./local-products";
 
 export type { Product, ProductDeliveryType, ProductStatus } from "./types";
 
+// Single product lookup by slug. Falls back to local data when Supabase is
+// unconfigured or the query fails. Returns null if no product is found.
+export async function loadProductBySlug(slug: string): Promise<Product | null> {
+  if (!hasSupabaseEnv()) {
+    return localProducts.find((p) => p.slug === slug && p.status === "active") ?? null;
+  }
+  const sb = getSupabase();
+  if (!sb) return null;
+  const { data, error } = await sb
+    .from("products")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "active")
+    .maybeSingle();
+  if (error) {
+    console.warn("[products] loadProductBySlug failed:", error.message);
+    return localProducts.find((p) => p.slug === slug && p.status === "active") ?? null;
+  }
+  if (!data) return null;
+  return mapRowToProduct(data as ProductRow);
+}
+
 // Load all active products. If Supabase env vars are present, query the live table.
 // If they're missing (local dev), fall back to bundled localProducts so the public
 // site never breaks.

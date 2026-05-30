@@ -3,6 +3,8 @@ import { useStaggerReveal } from "@/hooks/use-reveal";
 import { Nav } from "@/components/site/nav";
 import { CelestialDivider, ThreadPatternSvg } from "@/components/site/patterns";
 import { Intro } from "@/components/site/intro";
+import { TapestryThread } from "@/components/site/tapestry-thread";
+import { OracleInsight } from "@/components/site/oracle-insight";
 import { loadActiveProducts, type Product } from "@/lib/products";
 import {
   Sparkles, Wand2, Workflow, Palette, BookOpen, Layers, FileCode2,
@@ -419,9 +421,10 @@ function Vault() {
   }, []);
 
   return (
-    <Section id="vault" className="py-24">
+    <Section id="vault" className="py-24 relative">
+      <div className="vault-ambient" aria-hidden />
       <CelestialDivider label="The Vault" />
-      <div ref={introRef} className="text-center max-w-2xl mx-auto mb-14">
+      <div ref={introRef} className="text-center max-w-2xl mx-auto mb-14 relative">
         <h2 data-stagger className="stagger-child font-display text-4xl md:text-5xl text-[var(--espresso)]">
           Open the <span className="gold-text italic">Vault</span>
         </h2>
@@ -429,17 +432,20 @@ function Vault() {
           Digital products, templates, prompts, and creative systems designed to help you
           build smarter, faster, and with more intention.
         </p>
+        <p data-stagger className="stagger-child mt-2 text-[10px] tracking-[0.32em] uppercase text-[var(--gold)]/90">
+          Prompts · Templates · Systems · Frameworks · Downloads
+        </p>
       </div>
       <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((p, i) => {
           const artifactNum = String(i + 1).padStart(2, "0");
-          const href = p.stripePaymentLink || `#${p.slug}`;
+          const href = p.stripePaymentLink || `/vault/${p.slug}`;
           const isExternal = Boolean(p.stripePaymentLink);
           return (
             <article
               key={p.id}
               data-stagger
-              className="stagger-child group relative glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-500"
+              className="stagger-child vault-card group relative glow-card rounded-3xl overflow-hidden flex flex-col hover:-translate-y-1.5 transition-all duration-500"
             >
               <div className="relative h-44 bg-gradient-to-br from-[var(--wine)] to-[oklch(0.22_0.07_25)] flex items-center justify-center overflow-hidden">
                 <div className="absolute inset-0 weave-pattern opacity-60" />
@@ -475,7 +481,7 @@ function Vault() {
                     {...(isExternal
                       ? { target: "_blank", rel: "noopener noreferrer" }
                       : {})}
-                    className="text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 group-hover:text-[var(--crimson)] transition-all"
+                    className="vault-card-cta text-xs uppercase tracking-[0.2em] text-[var(--espresso)] inline-flex items-center gap-1.5 group-hover:gap-2.5 group-hover:text-[var(--crimson)] transition-all"
                   >
                     {p.ctaLabel} <ArrowRight className="w-3.5 h-3.5" />
                   </a>
@@ -552,6 +558,9 @@ function Studio() {
             <p data-stagger className="stagger-child mt-5 text-[oklch(0.97_0.015_80_/_0.8)] max-w-xl">
               One-to-one sessions and sprints to weave AI, strategy, and design into the
               spine of your business — without losing your voice.
+            </p>
+            <p data-stagger className="stagger-child mt-3 text-[10px] tracking-[0.32em] uppercase text-[var(--gold)]/90">
+              Consulting · Strategy · Design · Implementation
             </p>
           </div>
         </div>
@@ -760,12 +769,13 @@ function FinalCTA() {
 function Footer() {
   return (
     <footer className="relative pt-20 pb-14 text-center text-sm text-[var(--muted-foreground)] tapestry-bg overflow-hidden">
-      {/* Nkyimu watermark — large, faint mark anchoring the footer */}
+      {/* Nkyimu watermark — sits BELOW the quote and the brand line, centered, ~150% scale,
+          0.025 opacity. Lets the quote dominate without losing the brand sigil. */}
       <img
         src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 object-contain opacity-[0.04]"
+        className="pointer-events-none absolute left-1/2 bottom-[-220px] h-[780px] w-[780px] -translate-x-1/2 object-contain opacity-[0.025]"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).src =
             "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
@@ -799,7 +809,10 @@ function Footer() {
         <BookOpen className="w-3.5 h-3.5 text-[var(--gold)]" />
         <span className="uppercase tracking-[0.3em] text-xs">The AI Vision Weaver</span>
       </div>
-      <p className="relative">© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
+      <p className="relative max-w-2xl mx-auto px-6 text-xs text-[var(--espresso)]/60">
+        The Vault · The Studio · Oracle Transmissions · The AI Clarity Lab
+      </p>
+      <p className="relative mt-2">© {new Date().getFullYear()} Mikini Williams. Woven with intention.</p>
     </footer>
   );
 }
@@ -809,14 +822,33 @@ export function Landing() {
     <div className="min-h-screen bg-[var(--cream)] text-[var(--foreground)]">
       <Intro />
       <CursorSpotlight />
+      <TapestryThread />
       <Nav />
       <main>
         <Hero />
         <Tapestry />
+        <div className="max-w-7xl mx-auto px-6">
+          <OracleInsight
+            align="right"
+            body="Your ideas are the threads. Your systems are the weave."
+          />
+        </div>
         <Vault />
         <Studio />
+        <div className="max-w-7xl mx-auto px-6">
+          <OracleInsight
+            align="left"
+            body="Automation is not about replacing people. It is about amplifying intention."
+          />
+        </div>
         <Oracle />
         <About />
+        <div className="max-w-7xl mx-auto px-6">
+          <OracleInsight
+            align="center"
+            body="Every successful brand begins with clarity."
+          />
+        </div>
         <FinalCTA />
       </main>
       <Footer />

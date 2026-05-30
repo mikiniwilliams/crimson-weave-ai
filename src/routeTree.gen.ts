@@ -10,11 +10,17 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as VaultSlugRouteImport } from './routes/vault/$slug'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VaultSlugRoute = VaultSlugRouteImport.update({
+  id: '/vault/$slug',
+  path: '/vault/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminProductsRoute = AdminProductsRouteImport.update({
@@ -26,27 +32,31 @@ const AdminProductsRoute = AdminProductsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin/products': typeof AdminProductsRoute
+  '/vault/$slug': typeof VaultSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin/products': typeof AdminProductsRoute
+  '/vault/$slug': typeof VaultSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin/products': typeof AdminProductsRoute
+  '/vault/$slug': typeof VaultSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin/products'
+  fullPaths: '/' | '/admin/products' | '/vault/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/products'
-  id: '__root__' | '/' | '/admin/products'
+  to: '/' | '/admin/products' | '/vault/$slug'
+  id: '__root__' | '/' | '/admin/products' | '/vault/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminProductsRoute: typeof AdminProductsRoute
+  VaultSlugRoute: typeof VaultSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -56,6 +66,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/vault/$slug': {
+      id: '/vault/$slug'
+      path: '/vault/$slug'
+      fullPath: '/vault/$slug'
+      preLoaderRoute: typeof VaultSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/products': {
@@ -71,6 +88,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminProductsRoute: AdminProductsRoute,
+  VaultSlugRoute: VaultSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
