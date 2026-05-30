@@ -33,8 +33,16 @@ export async function loadActiveProducts(): Promise<Product[]> {
     return localProducts;
   }
 
-  console.log("Using Supabase products");
-  const products = ((data ?? []) as ProductRow[]).map(mapRowToProduct);
+  const rows = (data ?? []) as ProductRow[];
+  console.log(`Using Supabase products (${rows.length} active row${rows.length === 1 ? "" : "s"})`);
+  if (rows.length === 0) {
+    console.warn(
+      "[products] Supabase returned 0 active products. " +
+      "Check: (1) at least one row exists in public.products with status='active', " +
+      "(2) the anon 'Public can read active products' RLS policy is enabled."
+    );
+  }
+  const products = rows.map(mapRowToProduct);
   console.log(products);
   return products;
 }
