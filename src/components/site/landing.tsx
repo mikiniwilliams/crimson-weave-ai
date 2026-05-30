@@ -392,9 +392,12 @@ function Vault() {
 
   useEffect(() => {
     let cancelled = false;
+    console.log("Supabase enabled:", Boolean(import.meta.env.VITE_SUPABASE_URL));
     loadActiveProducts()
       .then((rows) => {
-        if (!cancelled) setProducts(rows);
+        if (cancelled) return;
+        console.log("Vault products loaded:", rows);
+        setProducts(rows);
       })
       .catch(() => {
         /* loader already falls back to local; ignore */
