@@ -9,9 +9,12 @@ export type { Product, ProductDeliveryType, ProductStatus } from "./types";
 // site never breaks.
 export async function loadActiveProducts(): Promise<Product[]> {
   if (!hasSupabaseEnv()) {
-    return localProducts
+    console.log("Using local products (Supabase env vars not set)");
+    const products = localProducts
       .filter((p) => p.status === "active")
       .sort((a, b) => a.sortOrder - b.sortOrder);
+    console.log(products);
+    return products;
   }
 
   const sb = getSupabase();
@@ -26,11 +29,12 @@ export async function loadActiveProducts(): Promise<Product[]> {
   if (error) {
     // If the query fails (e.g. table missing during initial setup), fall back
     // to local data rather than rendering an empty Vault.
-    if (typeof console !== "undefined") {
-      console.warn("[products] Supabase query failed, using local fallback:", error.message);
-    }
+    console.warn("[products] Supabase query failed, using local fallback:", error.message);
     return localProducts;
   }
 
-  return ((data ?? []) as ProductRow[]).map(mapRowToProduct);
+  console.log("Using Supabase products");
+  const products = ((data ?? []) as ProductRow[]).map(mapRowToProduct);
+  console.log(products);
+  return products;
 }
