@@ -100,12 +100,12 @@ function Hero() {
 
   return (
     <div ref={heroRef} className="relative overflow-hidden tapestry-bg section-vignette">
-      {/* Nkyimu watermark — anchored top-right on desktop so it stops fighting the Oracle */}
+      {/* Nkyimu watermark — anchored top-left on desktop so it sits behind the headline + copy */}
       <img
         src="/images/logo/ai-vision-weaver-nkyimu-logo-transparent.svg"
         alt=""
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[8%] z-0 w-[78vw] max-w-[380px] -translate-x-1/2 object-contain opacity-[0.04] md:left-auto md:right-[6%] md:top-[15%] md:w-[clamp(320px,34vw,620px)] md:max-w-none md:translate-x-0 md:opacity-[0.085]"
+        className="pointer-events-none absolute left-1/2 top-[8%] z-0 w-[78vw] max-w-[380px] -translate-x-1/2 object-contain opacity-[0.04] md:right-auto md:left-[4%] md:top-[18%] md:w-[clamp(320px,34vw,620px)] md:max-w-none md:translate-x-0 md:opacity-[0.085]"
         onError={(e) => {
           (e.currentTarget as HTMLImageElement).src =
             "/images/logo/ai-vision-weaver-nkyimu-logo-transparent.png";
@@ -131,8 +131,8 @@ function Hero() {
       </svg>
 
       <div className="relative mx-auto grid min-h-screen max-w-7xl items-center gap-16 px-6 pt-28 pb-24 md:pt-36 md:pb-28 lg:grid-cols-12 lg:gap-20">
-        {/* Left column — stagger reveal */}
-        <div className="lg:col-span-6 relative z-10">
+        {/* Left column — stagger reveal. Widened ~15% so headline has more breathing room. */}
+        <div className="lg:col-span-7 relative z-10">
           <div ref={leftColRef} className="relative">
             <div
               aria-hidden
@@ -186,9 +186,11 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right column — fastest parallax layer. Oracle is woven INTO the environment (no card frame). */}
+        {/* Right column — fastest parallax layer. Oracle is woven INTO the environment (no card frame).
+            Narrower col-span-5 + lg:w-clamp on the video means the figure keeps its size
+            and is free to overflow the column to the right. */}
         <div
-          className="relative z-[2] lg:col-span-6"
+          className="relative z-[2] lg:col-span-5"
           style={{ transform: "translateY(calc(var(--hero-y, 0px) * -0.13))", willChange: "transform" }}
         >
           <div className="relative flex min-h-[700px] items-center justify-center md:min-h-[900px] lg:min-h-[1100px]">
@@ -253,7 +255,7 @@ function Hero() {
               playsInline
               preload="metadata"
               aria-label="The Crimson Oracle, AI Vision Weaver guide"
-              className="oracle-figure relative mx-auto w-full max-w-[clamp(520px,48vw,760px)] drop-shadow-[0_70px_110px_oklch(0.30_0.11_22_/_0.55)] oracle-woven"
+              className="oracle-figure relative mx-auto w-full max-w-[clamp(520px,48vw,760px)] lg:w-[clamp(520px,48vw,760px)] lg:max-w-none drop-shadow-[0_70px_110px_oklch(0.30_0.11_22_/_0.44)] oracle-woven"
             />
 
             {/* Floating interface panels */}

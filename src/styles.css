@@ -370,11 +370,16 @@
 /* Cinematic oracle motion — the video carries the hand/body motion.
    Slight horizontal nudge + perspective so she sits in 3D space and reads larger. */
 .oracle-figure {
-  width: 100%;
   object-fit: contain;
   transform-origin: 50% 60%;
   will-change: transform;
   transform: perspective(1400px) translateX(6%) rotateY(-4deg) rotateX(2deg) scale(1.18);
+}
+/* Desktop: push the Oracle ~90px further right so she balances the wider text column. */
+@media (min-width: 1024px) {
+  .oracle-figure {
+    transform: perspective(1400px) translateX(calc(6% + 90px)) rotateY(-4deg) rotateX(2deg) scale(1.18);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .oracle-figure {
