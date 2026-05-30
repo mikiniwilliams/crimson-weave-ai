@@ -439,6 +439,10 @@ function Vault() {
                     alt=""
                     aria-hidden
                     className="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-[1.04] transition-transform duration-700"
+                    onError={(e) => {
+                      // Hide broken images so the gradient + icon fallback remains clean.
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
                   />
                 ) : null}
                 <span className="relative w-20 h-20 rounded-2xl bg-[oklch(0.78_0.13_80_/_0.15)] border border-[oklch(0.78_0.13_80_/_0.45)] text-[var(--gold)] flex items-center justify-center [&_svg]:w-8 [&_svg]:h-8 shadow-[0_0_30px_oklch(0.78_0.13_80_/_0.4)_inset] group-hover:scale-105 transition-transform duration-500">
