@@ -1,4 +1,7 @@
 import { Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, LogOut, User } from "lucide-react";
+import { useAuth, signOut } from "@/lib/supabase/auth";
 
 export function Nav() {
   return (
@@ -35,10 +38,94 @@ export function Nav() {
           <a href="#oracle" className="hover:text-[var(--crimson)] transition">Oracle</a>
           <a href="#about" className="hover:text-[var(--crimson)] transition">About</a>
         </nav>
-        <a href="#oracle" className="btn-primary text-sm px-5 py-2.5 rounded-full font-medium tracking-wide">
-          Join the Oracle
-        </a>
+        <AccountMenu />
       </div>
     </header>
+  );
+}
+
+// Auth-aware right-hand action:
+// - signed out: "Join the Oracle" CTA (unchanged from original)
+// - signed in:  initial-avatar + dropdown → My Vault / Sign out
+function AccountMenu() {
+  const auth = useAuth();
+
+  if (auth.status !== "signed-in") {
+    return (
+      <a
+        href="#oracle"
+        className="btn-primary text-sm px-5 py-2.5 rounded-full font-medium tracking-wide"
+      >
+        Join the Oracle
+      </a>
+    );
+  }
+
+  const email = auth.user.email ?? "";
+  const initial = (email[0] ?? "?").toUpperCase();
+  return <AuthedDropdown initial={initial} email={email} />;
+}
+
+function AuthedDropdown({ initial, email }: { initial: string; email: string }) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!wrapRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    window.addEventListener("mousedown", onDown);
+    return () => window.removeEventListener("mousedown", onDown);
+  }, [open]);
+
+  return (
+    <div ref={wrapRef} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex items-center gap-2 rounded-full bg-[var(--wine)] text-[var(--gold)] pl-1 pr-3 py-1 border border-[oklch(0.78_0.13_80_/_0.4)] shadow-[0_0_18px_oklch(0.78_0.13_80_/_0.3)] hover:scale-[1.02] transition"
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        <span className="inline-flex w-8 h-8 rounded-full items-center justify-center bg-[oklch(0.78_0.13_80_/_0.18)] font-display text-sm">
+          {initial}
+        </span>
+        <ChevronDown className="w-3.5 h-3.5" />
+      </button>
+
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 mt-2 w-56 rounded-2xl border border-[oklch(0.78_0.13_80_/_0.35)] bg-[oklch(0.985_0.012_80_/_0.95)] backdrop-blur shadow-[0_30px_60px_-20px_oklch(0.30_0.11_22_/_0.35)] overflow-hidden"
+        >
+          <div className="px-4 py-3 border-b border-[oklch(0.78_0.13_80_/_0.2)]">
+            <div className="text-[10px] tracking-[0.25em] uppercase text-[var(--muted-foreground)]">
+              Signed in
+            </div>
+            <div className="text-xs text-[var(--espresso)] truncate">{email}</div>
+          </div>
+          <Link
+            to="/my-vault"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 px-4 py-2.5 text-sm text-[var(--espresso)] hover:bg-[oklch(0.78_0.13_80_/_0.1)] transition"
+            role="menuitem"
+          >
+            <User className="w-4 h-4 text-[var(--gold)]" /> My Vault
+          </Link>
+          <button
+            type="button"
+            onClick={async () => {
+              setOpen(false);
+              await signOut();
+            }}
+            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[var(--espresso)] hover:bg-[oklch(0.78_0.13_80_/_0.1)] transition"
+            role="menuitem"
+          >
+            <LogOut className="w-4 h-4 text-[var(--crimson)]" /> Sign out
+          </button>
+        </div>
+      )}
+    </div>
   );
 }

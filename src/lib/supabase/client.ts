@@ -12,7 +12,14 @@ export function getSupabase(): SupabaseClient | null {
   if (!url || !anonKey) return null;
   if (cached) return cached;
   cached = createClient(url, anonKey, {
-    auth: { persistSession: false },
+    // Persist customer sessions across reloads so /my-vault stays signed in.
+    // The admin page (which uses the same client) is unaffected — useAuth
+    // still subscribes to onAuthStateChange.
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true,
+    },
   });
   return cached;
 }

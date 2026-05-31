@@ -9,11 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MyVaultRouteImport } from './routes/my-vault'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VaultSlugRouteImport } from './routes/vault/$slug'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
+import { Route as AccountLoginRouteImport } from './routes/account/login'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
 
+const MyVaultRoute = MyVaultRouteImport.update({
+  id: '/my-vault',
+  path: '/my-vault',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -29,6 +36,11 @@ const AdminProductsRoute = AdminProductsRouteImport.update({
   path: '/admin/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountLoginRoute = AccountLoginRouteImport.update({
+  id: '/account/login',
+  path: '/account/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe/webhook',
   path: '/api/stripe/webhook',
@@ -37,12 +49,16 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/my-vault': typeof MyVaultRoute
+  '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/my-vault': typeof MyVaultRoute
+  '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -50,18 +66,34 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/my-vault': typeof MyVaultRoute
+  '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin/products' | '/vault/$slug' | '/api/stripe/webhook'
+  fullPaths:
+    | '/'
+    | '/my-vault'
+    | '/account/login'
+    | '/admin/products'
+    | '/vault/$slug'
+    | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/products' | '/vault/$slug' | '/api/stripe/webhook'
+  to:
+    | '/'
+    | '/my-vault'
+    | '/account/login'
+    | '/admin/products'
+    | '/vault/$slug'
+    | '/api/stripe/webhook'
   id:
     | '__root__'
     | '/'
+    | '/my-vault'
+    | '/account/login'
     | '/admin/products'
     | '/vault/$slug'
     | '/api/stripe/webhook'
@@ -69,6 +101,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MyVaultRoute: typeof MyVaultRoute
+  AccountLoginRoute: typeof AccountLoginRoute
   AdminProductsRoute: typeof AdminProductsRoute
   VaultSlugRoute: typeof VaultSlugRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
@@ -76,6 +110,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/my-vault': {
+      id: '/my-vault'
+      path: '/my-vault'
+      fullPath: '/my-vault'
+      preLoaderRoute: typeof MyVaultRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -97,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/login': {
+      id: '/account/login'
+      path: '/account/login'
+      fullPath: '/account/login'
+      preLoaderRoute: typeof AccountLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/stripe/webhook': {
       id: '/api/stripe/webhook'
       path: '/api/stripe/webhook'
@@ -109,6 +157,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MyVaultRoute: MyVaultRoute,
+  AccountLoginRoute: AccountLoginRoute,
   AdminProductsRoute: AdminProductsRoute,
   VaultSlugRoute: VaultSlugRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
