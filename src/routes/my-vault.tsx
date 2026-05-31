@@ -23,12 +23,18 @@ export const Route = createFileRoute("/my-vault")({
       { name: "robots", content: "noindex,nofollow" },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>): { welcome?: string; session_id?: string } => ({
+    welcome: typeof search.welcome === "string" ? search.welcome : undefined,
+    session_id: typeof search.session_id === "string" ? search.session_id : undefined,
+  }),
   component: MyVaultPage,
 });
 
 function MyVaultPage() {
   const auth = useAuth();
   const navigate = useNavigate();
+  const search = Route.useSearch();
+  const justPurchased = search.welcome === "1";
   const [orders, setOrders] = useState<OrderWithProduct[] | null>(null);
 
   // Gate behind auth — redirect to login if not signed in.
@@ -106,6 +112,17 @@ function MyVaultPage() {
       <Nav />
       <main className="max-w-6xl mx-auto px-6 pt-16 pb-24">
         <CelestialDivider label="My Vault" />
+
+        {justPurchased && (
+          <div className="max-w-2xl mx-auto mb-10 rounded-2xl border border-[oklch(0.78_0.13_80_/_0.45)] bg-[oklch(0.78_0.13_80_/_0.08)] px-5 py-4 text-center">
+            <p className="font-display italic text-lg text-[var(--espresso)]">
+              The thread has been woven. Your new artifact is being prepared.
+            </p>
+            <p className="mt-1 text-xs text-[var(--muted-foreground)]">
+              If it isn't shown yet, refresh in a moment — the transmission is still arriving.
+            </p>
+          </div>
+        )}
 
         <header className="text-center max-w-2xl mx-auto mb-12">
           <h1 className="font-display text-4xl md:text-5xl text-[var(--espresso)]">

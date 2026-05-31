@@ -6,6 +6,22 @@ import { ArrowRight, ChevronLeft, Lock, Sparkles } from "lucide-react";
 import { loadProductBySlug } from "@/lib/products";
 import type { Product } from "@/lib/products/types";
 
+// Click handler for the dynamic checkout path. Starts a Stripe Checkout
+// Session for the given product slug and redirects the browser to it.
+async function startCheckout(slug: string): Promise<string | null> {
+  const res = await fetch("/api/checkout", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ slug }),
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    throw new Error(body.error || `Checkout failed: ${res.status}`);
+  }
+  const { url } = (await res.json()) as { url?: string };
+  return url ?? null;
+}
+
 export const Route = createFileRoute("/vault/$slug")({
   component: VaultProductPage,
   head: ({ params }) => ({
@@ -32,6 +48,8 @@ function prettifySlug(slug: string): string {
 function VaultProductPage() {
   const { slug } = Route.useParams();
   const [product, setProduct] = useState<Product | null | undefined>(undefined);
+  const [checkingOut, setCheckingOut] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,6 +60,19 @@ function VaultProductPage() {
       cancelled = true;
     };
   }, [slug]);
+
+  const onBuyDynamic = async () => {
+    if (!product) return;
+    setCheckingOut(true);
+    setCheckoutError(null);
+    try {
+      const url = await startCheckout(product.slug);
+      if (url) window.location.href = url;
+    } catch (err) {
+      setCheckoutError(err instanceof Error ? err.message : "Checkout failed.");
+      setCheckingOut(false);
+    }
+  };
 
   if (product === undefined) {
     return (
@@ -77,8 +108,13 @@ function VaultProductPage() {
     );
   }
 
+  // Purchase mode resolution:
+  //   1. Has stripe_payment_link  -> link directly to the Payment Link (legacy/manual)
+  //   2. Has stripe_price_id      -> POST /api/checkout to create a session at click
+  //   3. Neither                  -> "Coming soon"
   const purchaseHref = product.stripePaymentLink;
-  const hasPurchase = Boolean(purchaseHref);
+  const canCheckoutDynamic = !purchaseHref && Boolean(product.stripePriceId);
+  const hasPurchase = Boolean(purchaseHref) || canCheckoutDynamic;
 
   return (
     <div className="min-h-screen bg-[var(--cream)] text-[var(--foreground)]">
@@ -137,21 +173,33 @@ function VaultProductPage() {
               <span className="font-display text-4xl text-[var(--crimson)]">
                 {product.price}
               </span>
-              {hasPurchase ? (
+              {purchaseHref ? (
                 <a
-                  href={purchaseHref!}
+                  href={purchaseHref}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium tracking-wide"
                 >
                   {product.ctaLabel} <ArrowRight className="w-4 h-4" />
                 </a>
+              ) : canCheckoutDynamic ? (
+                <button
+                  type="button"
+                  onClick={onBuyDynamic}
+                  disabled={checkingOut}
+                  className="btn-primary inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium tracking-wide disabled:opacity-70"
+                >
+                  {checkingOut ? "Preparing…" : product.ctaLabel} <ArrowRight className="w-4 h-4" />
+                </button>
               ) : (
                 <span className="text-sm uppercase tracking-[0.25em] text-[var(--muted-foreground)]">
                   Coming soon
                 </span>
               )}
             </div>
+            {checkoutError && (
+              <p className="mt-3 text-sm text-[var(--crimson)]">{checkoutError}</p>
+            )}
 
             <CelestialDivider />
 
@@ -194,14 +242,25 @@ function VaultProductPage() {
                 <p className="font-display italic text-2xl text-[var(--espresso)]">
                   "Excellence is woven, not assembled."
                 </p>
-                <a
-                  href={purchaseHref!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-primary mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium tracking-wide"
-                >
-                  {product.ctaLabel} <ArrowRight className="w-4 h-4" />
-                </a>
+                {purchaseHref ? (
+                  <a
+                    href={purchaseHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-primary mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium tracking-wide"
+                  >
+                    {product.ctaLabel} <ArrowRight className="w-4 h-4" />
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={onBuyDynamic}
+                    disabled={checkingOut}
+                    className="btn-primary mt-6 inline-flex items-center gap-2 rounded-full px-7 py-3.5 font-medium tracking-wide disabled:opacity-70"
+                  >
+                    {checkingOut ? "Preparing…" : product.ctaLabel} <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             )}
           </article>

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MyVaultRouteImport } from './routes/my-vault'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VaultSlugRouteImport } from './routes/vault/$slug'
+import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
 import { Route as AccountLoginRouteImport } from './routes/account/login'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe/webhook'
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const VaultSlugRoute = VaultSlugRouteImport.update({
   id: '/vault/$slug',
   path: '/vault/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
+  id: '/api/checkout',
+  path: '/api/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminProductsRoute = AdminProductsRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/my-vault': typeof MyVaultRoute
   '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
+  '/api/checkout': typeof ApiCheckoutRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/my-vault': typeof MyVaultRoute
   '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
+  '/api/checkout': typeof ApiCheckoutRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/my-vault': typeof MyVaultRoute
   '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
+  '/api/checkout': typeof ApiCheckoutRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/my-vault'
     | '/account/login'
     | '/admin/products'
+    | '/api/checkout'
     | '/vault/$slug'
     | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/my-vault'
     | '/account/login'
     | '/admin/products'
+    | '/api/checkout'
     | '/vault/$slug'
     | '/api/stripe/webhook'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/my-vault'
     | '/account/login'
     | '/admin/products'
+    | '/api/checkout'
     | '/vault/$slug'
     | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   MyVaultRoute: typeof MyVaultRoute
   AccountLoginRoute: typeof AccountLoginRoute
   AdminProductsRoute: typeof AdminProductsRoute
+  ApiCheckoutRoute: typeof ApiCheckoutRoute
   VaultSlugRoute: typeof VaultSlugRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
@@ -129,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/vault/$slug'
       fullPath: '/vault/$slug'
       preLoaderRoute: typeof VaultSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/checkout': {
+      id: '/api/checkout'
+      path: '/api/checkout'
+      fullPath: '/api/checkout'
+      preLoaderRoute: typeof ApiCheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/products': {
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   MyVaultRoute: MyVaultRoute,
   AccountLoginRoute: AccountLoginRoute,
   AdminProductsRoute: AdminProductsRoute,
+  ApiCheckoutRoute: ApiCheckoutRoute,
   VaultSlugRoute: VaultSlugRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
