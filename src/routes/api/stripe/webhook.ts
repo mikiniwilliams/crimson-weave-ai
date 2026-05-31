@@ -3,74 +3,73 @@
 // Route path: /api/stripe/webhook
 // Production: https://www.theaivisionweaver.com/api/stripe/webhook
 //
-// Verifies the incoming request signature against STRIPE_WEBHOOK_SECRET
-// and persists relevant events to the public.orders table via the
-// service-role Supabase client.
-//
-// Required env vars on Vercel (NOT VITE_-prefixed — server-only):
-//   STRIPE_SECRET_KEY
-//   STRIPE_WEBHOOK_SECRET
-//   SUPABASE_URL                (or reuse VITE_SUPABASE_URL — the config helper falls back)
-//   SUPABASE_SERVICE_ROLE_KEY
+// TanStack Start 1.167.x: HTTP method handlers attach to a regular file route
+// via the `server.handlers` config. The file route generator picks this up by
+// scanning for `createFileRoute` (from @tanstack/react-router), which is why
+// the earlier `createServerFileRoute` version never registered.
 
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import Stripe from "stripe";
 import { getServerConfig } from "@/lib/config.server";
 import { getSupabaseAdmin } from "@/lib/supabase/admin.server";
 
-export const ServerRoute = createServerFileRoute("/api/stripe/webhook").methods({
-  // Stripe pings GET when you verify the endpoint in the dashboard.
-  GET: () =>
-    new Response(
-      JSON.stringify({
-        ok: true,
-        endpoint: "/api/stripe/webhook",
-        note: "Send POST events from Stripe here.",
-      }),
-      { status: 200, headers: { "content-type": "application/json" } }
-    ),
+export const Route = createFileRoute("/api/stripe/webhook")({
+  server: {
+    handlers: {
+      // Stripe sometimes pings GET when you verify the endpoint in the dashboard.
+      GET: () =>
+        new Response(
+          JSON.stringify({
+            ok: true,
+            endpoint: "/api/stripe/webhook",
+            note: "Send POST events from Stripe here.",
+          }),
+          { status: 200, headers: { "content-type": "application/json" } }
+        ),
 
-  POST: async ({ request }) => {
-    const cfg = getServerConfig();
-    if (!cfg.stripeSecretKey || !cfg.stripeWebhookSecret) {
-      console.error("[stripe.webhook] missing STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET");
-      return new Response("Stripe not configured", { status: 500 });
-    }
+      POST: async ({ request }) => {
+        const cfg = getServerConfig();
+        if (!cfg.stripeSecretKey || !cfg.stripeWebhookSecret) {
+          console.error("[stripe.webhook] missing STRIPE_SECRET_KEY or STRIPE_WEBHOOK_SECRET");
+          return new Response("Stripe not configured", { status: 500 });
+        }
 
-    const signature = request.headers.get("stripe-signature");
-    if (!signature) return new Response("Missing stripe-signature header", { status: 400 });
+        const signature = request.headers.get("stripe-signature");
+        if (!signature) {
+          return new Response("Missing stripe-signature header", { status: 400 });
+        }
 
-    // IMPORTANT: Stripe verifies the RAW body. Do not parse to JSON first.
-    const rawBody = await request.text();
-    const stripe = new Stripe(cfg.stripeSecretKey);
+        // IMPORTANT: Stripe verifies the RAW body. Do not parse to JSON first.
+        const rawBody = await request.text();
+        const stripe = new Stripe(cfg.stripeSecretKey);
 
-    let event: Stripe.Event;
-    try {
-      // constructEventAsync uses Web Crypto and works in Edge/Node runtimes.
-      event = await stripe.webhooks.constructEventAsync(
-        rawBody,
-        signature,
-        cfg.stripeWebhookSecret
-      );
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "unknown";
-      console.error("[stripe.webhook] signature verification failed:", message);
-      return new Response(`Invalid signature: ${message}`, { status: 400 });
-    }
+        let event: Stripe.Event;
+        try {
+          // constructEventAsync uses Web Crypto and works in Edge/Node runtimes.
+          event = await stripe.webhooks.constructEventAsync(
+            rawBody,
+            signature,
+            cfg.stripeWebhookSecret
+          );
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "unknown";
+          console.error("[stripe.webhook] signature verification failed:", message);
+          return new Response(`Invalid signature: ${message}`, { status: 400 });
+        }
 
-    try {
-      await handleEvent(event);
-    } catch (err) {
-      // Log but still return 200 if we've already persisted the event — Stripe
-      // retries 5xx aggressively. Return 500 only when persistence is the issue.
-      console.error("[stripe.webhook] handler error:", err);
-      return new Response("Handler failed", { status: 500 });
-    }
+        try {
+          await handleEvent(event);
+        } catch (err) {
+          console.error("[stripe.webhook] handler error:", err);
+          return new Response("Handler failed", { status: 500 });
+        }
 
-    return new Response(JSON.stringify({ received: true, type: event.type }), {
-      status: 200,
-      headers: { "content-type": "application/json" },
-    });
+        return new Response(JSON.stringify({ received: true, type: event.type }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        });
+      },
+    },
   },
 });
 
@@ -96,22 +95,17 @@ async function handleEvent(event: Stripe.Event) {
       break;
 
     default:
-      // Acknowledge unknown events so Stripe stops retrying.
       console.log("[stripe.webhook] unhandled event:", event.type);
   }
 }
 
 async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
   const sb = getSupabaseAdmin();
-  if (!sb) {
-    console.error("[stripe.webhook] supabase admin client unavailable");
-    throw new Error("Supabase admin not configured");
-  }
+  if (!sb) throw new Error("Supabase admin not configured");
 
   const productSlug =
     (session.metadata?.product_slug as string | undefined) ?? null;
 
-  // Try to link to a known product when metadata.product_slug is present.
   let productId: string | null = null;
   if (productSlug) {
     const { data } = await sb
@@ -147,8 +141,6 @@ async function onCheckoutCompleted(session: Stripe.Checkout.Session) {
 async function onCheckoutFailed(session: Stripe.Checkout.Session) {
   const sb = getSupabaseAdmin();
   if (!sb) return;
-  // If we never persisted this session (e.g. the async payment failed before
-  // a 'completed' event arrived), upsert a row so the failure is recorded.
   const row = {
     stripe_session_id: session.id,
     stripe_payment_intent_id:
