@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as MyVaultRouteImport } from './routes/my-vault'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VaultSlugRouteImport } from './routes/vault/$slug'
+import { Route as StudioWebsiteAuditBlueprintRouteImport } from './routes/studio/website-audit-blueprint'
 import { Route as ApiCheckoutRouteImport } from './routes/api/checkout'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
 import { Route as AccountLoginRouteImport } from './routes/account/login'
@@ -32,6 +33,12 @@ const VaultSlugRoute = VaultSlugRouteImport.update({
   path: '/vault/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioWebsiteAuditBlueprintRoute =
+  StudioWebsiteAuditBlueprintRouteImport.update({
+    id: '/studio/website-audit-blueprint',
+    path: '/studio/website-audit-blueprint',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiCheckoutRoute = ApiCheckoutRouteImport.update({
   id: '/api/checkout',
   path: '/api/checkout',
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/studio/website-audit-blueprint': typeof StudioWebsiteAuditBlueprintRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -68,6 +76,7 @@ export interface FileRoutesByTo {
   '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/studio/website-audit-blueprint': typeof StudioWebsiteAuditBlueprintRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -78,6 +87,7 @@ export interface FileRoutesById {
   '/account/login': typeof AccountLoginRoute
   '/admin/products': typeof AdminProductsRoute
   '/api/checkout': typeof ApiCheckoutRoute
+  '/studio/website-audit-blueprint': typeof StudioWebsiteAuditBlueprintRoute
   '/vault/$slug': typeof VaultSlugRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
 }
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/admin/products'
     | '/api/checkout'
+    | '/studio/website-audit-blueprint'
     | '/vault/$slug'
     | '/api/stripe/webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +109,7 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/admin/products'
     | '/api/checkout'
+    | '/studio/website-audit-blueprint'
     | '/vault/$slug'
     | '/api/stripe/webhook'
   id:
@@ -107,6 +119,7 @@ export interface FileRouteTypes {
     | '/account/login'
     | '/admin/products'
     | '/api/checkout'
+    | '/studio/website-audit-blueprint'
     | '/vault/$slug'
     | '/api/stripe/webhook'
   fileRoutesById: FileRoutesById
@@ -117,6 +130,7 @@ export interface RootRouteChildren {
   AccountLoginRoute: typeof AccountLoginRoute
   AdminProductsRoute: typeof AdminProductsRoute
   ApiCheckoutRoute: typeof ApiCheckoutRoute
+  StudioWebsiteAuditBlueprintRoute: typeof StudioWebsiteAuditBlueprintRoute
   VaultSlugRoute: typeof VaultSlugRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
@@ -142,6 +156,13 @@ declare module '@tanstack/react-router' {
       path: '/vault/$slug'
       fullPath: '/vault/$slug'
       preLoaderRoute: typeof VaultSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/studio/website-audit-blueprint': {
+      id: '/studio/website-audit-blueprint'
+      path: '/studio/website-audit-blueprint'
+      fullPath: '/studio/website-audit-blueprint'
+      preLoaderRoute: typeof StudioWebsiteAuditBlueprintRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/checkout': {
@@ -181,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountLoginRoute: AccountLoginRoute,
   AdminProductsRoute: AdminProductsRoute,
   ApiCheckoutRoute: ApiCheckoutRoute,
+  StudioWebsiteAuditBlueprintRoute: StudioWebsiteAuditBlueprintRoute,
   VaultSlugRoute: VaultSlugRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }

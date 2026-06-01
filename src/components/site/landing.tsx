@@ -9,7 +9,7 @@ import { loadActiveProducts, type Product } from "@/lib/products";
 import {
   Sparkles, Wand2, Workflow, Palette, BookOpen, Layers, FileCode2,
   Compass, Rocket, MessagesSquare, GraduationCap, Eye, Lock,
-  ArrowRight, Mail, Brain, Network, Wrench, Megaphone, TrendingUp,
+  ArrowRight, Mail, Brain, Network, Megaphone, TrendingUp,
 } from "lucide-react";
 
 // Public asset paths (served from /public/images)
@@ -499,12 +499,77 @@ function Vault() {
 
 const studioOffers = [
   { icon: <Brain />, title: "AI Brand Strategy Session", body: "90 minutes to clarify positioning, audience, and AI offer." },
-  { icon: <Wrench />, title: "Website Audit + Redesign Plan", body: "A premium audit and a clear redesign roadmap." },
   { icon: <Workflow />, title: "AI Workflow Mapping", body: "Design the automations behind your content and ops." },
   { icon: <Rocket />, title: "Digital Product Launch Support", body: "From idea to first sale with smart systems behind it." },
   { icon: <Palette />, title: "Canva + Content Design Sprint", body: "Two weeks of high-craft visuals and templates." },
   { icon: <GraduationCap />, title: "AI Clarity Workshop", body: "A small-group session to demystify AI for your business." },
 ];
+
+// Flagship Studio engagement — Website Audit Blueprint™. Anchored at the top of
+// the Studio section so this is the lead offer; the smaller cards below frame
+// the other engagements as supporting work.
+function FlagshipPanel() {
+  return (
+    <div className="relative rounded-[2rem] overflow-hidden border border-[oklch(0.78_0.13_80_/_0.5)] bg-[linear-gradient(180deg,oklch(0.32_0.12_22_/_0.85),oklch(0.22_0.07_25_/_0.95))] shadow-[0_30px_80px_-30px_oklch(0_0_0_/_0.6)]">
+      <div className="absolute inset-0 weave-pattern opacity-30 pointer-events-none" />
+      <div className="absolute -top-24 -right-24 h-80 w-80 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.45),transparent_60%)] blur-3xl ambient-glow" />
+      <div className="absolute -bottom-24 -left-24 h-80 w-80 rounded-full bg-[radial-gradient(circle,oklch(0.42_0.16_25_/_0.4),transparent_60%)] blur-3xl" />
+
+      <div className="relative grid lg:grid-cols-12 gap-8 items-center p-8 md:p-12">
+        <div className="lg:col-span-8">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[oklch(0.78_0.13_80_/_0.5)] bg-[oklch(0.78_0.13_80_/_0.12)] px-4 py-1.5 uppercase tracking-[0.3em] text-[10px] text-[var(--gold)] mb-5">
+            <Sparkles className="w-3 h-3" /> Flagship Engagement
+          </div>
+          <h3 className="font-display text-3xl md:text-5xl text-[oklch(0.97_0.015_80)] leading-tight">
+            Website Audit <span className="gold-text italic">Blueprint</span>
+            <span className="text-[var(--gold)] text-xl md:text-2xl align-top">™</span>
+          </h3>
+          <p className="mt-4 font-display italic text-lg md:text-xl text-[var(--gold)]/95">
+            See what your website can't tell you.
+          </p>
+          <p className="mt-5 text-[oklch(0.97_0.015_80_/_0.8)] max-w-xl leading-relaxed">
+            A strategic diagnostic across brand, conversion, SEO, AI visibility, and competitive
+            positioning — delivered as a private blueprint with 30- and 90-day roadmaps.
+          </p>
+          <div className="mt-7 flex flex-wrap items-center gap-4">
+            <Link
+              to="/studio/website-audit-blueprint"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--gold)] text-[var(--wine)] px-7 py-3.5 font-medium tracking-wide hover:scale-[1.03] transition shadow-[0_20px_50px_-15px_oklch(0.78_0.13_80_/_0.7)]"
+            >
+              Explore the Blueprint <ArrowRight className="w-4 h-4" />
+            </Link>
+            <div className="text-[oklch(0.97_0.015_80_/_0.7)] text-sm">
+              Starting at <span className="font-display text-lg text-[var(--gold)]">$997</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="lg:col-span-4 relative">
+          <div className="relative aspect-square max-w-[320px] mx-auto">
+            <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.4),transparent_60%)] blur-2xl ambient-glow" />
+            <div className="absolute inset-4 rounded-full border border-[oklch(0.78_0.13_80_/_0.3)]" />
+            <div className="absolute inset-12 rounded-full border border-[oklch(0.78_0.13_80_/_0.18)]" />
+            <svg viewBox="0 0 200 200" className="relative w-full h-full" aria-hidden>
+              {/* Nkyimu-style center */}
+              <g stroke="#e8c46a" strokeWidth="1.4" fill="none" opacity="0.9">
+                <rect x="80" y="86" width="40" height="7" />
+                <rect x="80" y="107" width="40" height="7" />
+                <rect x="92" y="74" width="7" height="40" />
+                <rect x="107" y="74" width="7" height="40" />
+              </g>
+              {[0, 60, 120, 180, 240, 300].map((deg) => {
+                const r = (deg * Math.PI) / 180;
+                const x = 100 + Math.cos(r) * 78;
+                const y = 100 + Math.sin(r) * 78;
+                return <circle key={deg} cx={x} cy={y} r="3.5" fill="#f3d77a" />;
+              })}
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function Studio() {
   const headerRef = useStaggerReveal<HTMLDivElement>(130);
@@ -537,7 +602,7 @@ function Studio() {
         ))}
       </div>
       <Section id="studio">
-        <div ref={headerRef} className="grid lg:grid-cols-12 gap-12 items-center mb-16 relative">
+        <div ref={headerRef} className="grid lg:grid-cols-12 gap-12 items-center mb-12 relative">
           <div data-stagger className="stagger-child lg:col-span-5">
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,oklch(0.78_0.13_80_/_0.55),transparent_60%)] blur-3xl ambient-glow" />
@@ -565,6 +630,13 @@ function Studio() {
           </div>
         </div>
 
+        {/* FLAGSHIP — Website Audit Blueprint anchored as the centerpiece. */}
+        <FlagshipPanel />
+
+        {/* Supporting offers below the flagship — same cards, smaller framing. */}
+        <div className="mt-12 mb-4 text-[10px] tracking-[0.35em] uppercase text-[var(--gold)]/80">
+          Also work with The Studio on
+        </div>
         <div ref={gridRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           {studioOffers.map((o) => (
             <div
@@ -579,12 +651,6 @@ function Studio() {
               <p className="mt-2 text-sm text-[oklch(0.97_0.015_80_/_0.7)]">{o.body}</p>
             </div>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <a href="#oracle" className="inline-flex items-center gap-2 rounded-full bg-[var(--gold)] text-[var(--wine)] px-8 py-4 font-medium tracking-wide hover:scale-[1.03] transition shadow-[0_20px_50px_-15px_oklch(0.78_0.13_80_/_0.7)]">
-            Book a Strategy Session <ArrowRight className="w-4 h-4" />
-          </a>
         </div>
       </Section>
     </div>
