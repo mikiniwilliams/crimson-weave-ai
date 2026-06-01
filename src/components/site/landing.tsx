@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { useStaggerReveal } from "@/hooks/use-reveal";
 import { Nav } from "@/components/site/nav";
 import { CelestialDivider, ThreadPatternSvg } from "@/components/site/patterns";
